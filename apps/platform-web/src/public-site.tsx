@@ -51,7 +51,9 @@ export function PublicSiteEntry({ shareId, fallback }: { shareId: string; fallba
       clearInterval(t);
     };
   }, [shareId, retry]);
-  if (privateSite) return fallback;
+  // Platform dataset queries use the visitor's authenticated session and organization.
+  // Public sites with their own backend/accounts remain available without a platform login.
+  if (privateSite || (site && site.preview.manifest.queries.length > 0)) return fallback;
   return (
     <main className="shared-site shared-site-standalone">
       {loading ? (
