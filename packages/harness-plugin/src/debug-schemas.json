@@ -1,0 +1,316 @@
+{
+  "StudioDebugOpen": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "versionId": {
+        "type": "string"
+      },
+      "viewport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "width",
+          "height"
+        ]
+      }
+    },
+    "required": [
+      "versionId"
+    ]
+  },
+  "StudioDebugAction": {
+    "oneOf": [
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "click"
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "hover"
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "fill"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "value"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "select"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "value"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "press"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "value"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "check"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "checked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "checked"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "scroll"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "x",
+          "y"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "resize"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "type",
+          "width",
+          "height"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "inspect"
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "wait"
+          },
+          "milliseconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "reload"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "evaluate"
+          },
+          "expression": {
+            "type": "string",
+            "minLength": 1,
+            "description": "JavaScript expression executed only inside the isolated browser app frame; no Node.js or server shell access."
+          }
+        },
+        "required": [
+          "type",
+          "expression"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "key_down"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "key"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "key_up"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "key"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "mouse"
+          },
+          "event": {
+            "enum": [
+              "move",
+              "click",
+              "down",
+              "up"
+            ]
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "event",
+          "x",
+          "y"
+        ]
+      }
+    ]
+  }
+}

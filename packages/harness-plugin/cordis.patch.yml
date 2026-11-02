@@ -1,0 +1,9 @@
+- insert:
+    - id: enterprise-ai-studio
+      name: '@zhujunjie12/harness-plugin'
+      config:
+        apiUrl: ''
+        portalUrl: ''
+        timeoutMs: 15000
+        allowLocalHttp: false
+        logLevel: error

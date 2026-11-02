@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "entrypoint": "src/main.tsx",
+  "datasetRefs": [],
+  "queries": [],
+  "runtime": {
+    "kind": "node24-http-v1",
+    "entrypoint": "server/main.ts",
+    "dataSource": "main"
+  }
+}

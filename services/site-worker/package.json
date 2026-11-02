@@ -1,0 +1,6 @@
+{
+  "name":"@eas/site-worker","version":"0.0.0","private":true,"type":"module",
+  "scripts":{"build":"tsc","typecheck":"tsc --noEmit","start":"node dist/main.js"},
+  "dependencies":{"@eas/api-contract":"workspace:*","@eas/connector-transport":"workspace:*","pg":"8.23.1"},
+  "devDependencies":{"@types/pg":"8.23.1"}
+}

@@ -1,0 +1,54 @@
+:root {
+  font-synthesis: none;
+}
+body {
+  margin: 0;
+  background: #f7f8fc;
+}
+.runtime-login {
+  max-width: 520px;
+  margin: 8vh auto;
+  font-family: Inter, 'Microsoft YaHei', sans-serif;
+  padding: 36px;
+  background: #fff;
+  border: 1px solid #e5eaf3;
+  border-radius: 14px;
+  color: #52617b;
+}
+.runtime-login > p {
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  color: #8e9bb3;
+}
+.runtime-login h1 {
+  font-size: 25px;
+  font-weight: 600;
+}
+.runtime-login > span {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #8c98af;
+}
+.runtime-login form {
+  display: grid;
+  gap: 20px;
+  margin-top: 28px;
+}
+.runtime-login label {
+  display: grid;
+  gap: 8px;
+  font-size: 11px;
+}
+.runtime-login input {
+  padding: 11px;
+  border: 1px solid #e0e6f2;
+  border-radius: 6px;
+}
+.runtime-login button {
+  background: #5368e8;
+  border: 0;
+  border-radius: 7px;
+  padding: 12px;
+  color: #fff;
+  cursor: pointer;
+}

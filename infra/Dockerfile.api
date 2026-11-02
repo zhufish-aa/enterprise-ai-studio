@@ -1,0 +1,12 @@
+FROM node:24-bookworm-slim AS build
+WORKDIR /workspace
+RUN npm install --global pnpm@10.12.1
+COPY . .
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter @eas/platform-api... build
+
+FROM build AS runtime
+ENV NODE_ENV=production API_HOST=0.0.0.0 API_PORT=3000
+USER node
+EXPOSE 3000
+CMD ["node", "apps/platform-api/dist/main.js"]

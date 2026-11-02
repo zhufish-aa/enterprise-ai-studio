@@ -1,0 +1,2864 @@
+{
+  "QuerySpec": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "datasetId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "datasetVersionId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "metrics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,62}$"
+        },
+        "maxItems": 20,
+        "uniqueItems": true
+      },
+      "dimensions": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,62}$"
+        },
+        "maxItems": 30,
+        "uniqueItems": true
+      },
+      "filters": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/Filter"
+        },
+        "maxItems": 30
+      },
+      "groupBy": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,62}$"
+        },
+        "maxItems": 20,
+        "uniqueItems": true
+      },
+      "orderBy": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          "required": [
+            "key",
+            "direction"
+          ]
+        },
+        "maxItems": 20,
+        "uniqueItems": true
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Optional caller-requested result row count. No preset platform row ceiling; omit to avoid a row limit, or use pagination for incremental retrieval."
+      },
+      "pagination": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "pageSize"
+        ]
+      },
+      "timeRange": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "fieldKey",
+          "from",
+          "to"
+        ]
+      }
+    },
+    "required": [
+      "datasetId",
+      "metrics",
+      "dimensions",
+      "filters",
+      "groupBy",
+      "orderBy"
+    ],
+    "$defs": {
+      "QuerySpec": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30,
+            "uniqueItems": true
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Filter"
+            },
+            "maxItems": 30
+          },
+          "groupBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "direction"
+              ]
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Optional caller-requested result row count. No preset platform row ceiling; omit to avoid a row limit, or use pagination for incremental retrieval."
+          },
+          "pagination": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pageSize": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cursor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "pageSize"
+            ]
+          },
+          "timeRange": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fieldKey": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,62}$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "fieldKey",
+              "from",
+              "to"
+            ]
+          }
+        },
+        "required": [
+          "datasetId",
+          "metrics",
+          "dimensions",
+          "filters",
+          "groupBy",
+          "orderBy"
+        ]
+      },
+      "Filter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "in",
+              "between"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            ]
+          }
+        },
+        "required": [
+          "fieldKey",
+          "operator",
+          "value"
+        ]
+      }
+    }
+  },
+  "SourceManifest": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "schemaVersion": {
+        "const": "1.0"
+      },
+      "entrypoint": {
+        "const": "src/main.tsx"
+      },
+      "datasetRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/DatasetRef"
+        },
+        "maxItems": 10
+      },
+      "queries": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/BoundQuery"
+        },
+        "maxItems": 12
+      },
+      "report": {
+        "$ref": "#/$defs/ReportDefinition"
+      },
+      "capabilities": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "enum": [
+            "student-center"
+          ]
+        },
+        "description": "Explicit platform-managed business capabilities required by this immutable version."
+      },
+      "runtime": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "node24-http-v1"
+          },
+          "entrypoint": {
+            "type": "string",
+            "pattern": "^server/[a-zA-Z0-9_/-]+\\.ts$"
+          },
+          "dataSource": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,62}$"
+          }
+        },
+        "required": [
+          "kind",
+          "entrypoint",
+          "dataSource"
+        ]
+      }
+    },
+    "required": [
+      "schemaVersion",
+      "entrypoint",
+      "datasetRefs",
+      "queries"
+    ],
+    "$defs": {
+      "SourceManifest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "1.0"
+          },
+          "entrypoint": {
+            "const": "src/main.tsx"
+          },
+          "datasetRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DatasetRef"
+            },
+            "maxItems": 10
+          },
+          "queries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/BoundQuery"
+            },
+            "maxItems": 12
+          },
+          "report": {
+            "$ref": "#/$defs/ReportDefinition"
+          },
+          "capabilities": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "student-center"
+              ]
+            },
+            "description": "Explicit platform-managed business capabilities required by this immutable version."
+          },
+          "runtime": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "node24-http-v1"
+              },
+              "entrypoint": {
+                "type": "string",
+                "pattern": "^server/[a-zA-Z0-9_/-]+\\.ts$"
+              },
+              "dataSource": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{0,62}$"
+              }
+            },
+            "required": [
+              "kind",
+              "entrypoint",
+              "dataSource"
+            ]
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "entrypoint",
+          "datasetRefs",
+          "queries"
+        ]
+      },
+      "DatasetRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "datasetId",
+          "datasetVersionId"
+        ]
+      },
+      "BoundQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "query": {
+            "$ref": "#/$defs/QuerySpec"
+          }
+        },
+        "required": [
+          "key",
+          "query"
+        ]
+      },
+      "QuerySpec": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30,
+            "uniqueItems": true
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Filter"
+            },
+            "maxItems": 30
+          },
+          "groupBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "direction"
+              ]
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Optional caller-requested result row count. No preset platform row ceiling; omit to avoid a row limit, or use pagination for incremental retrieval."
+          },
+          "pagination": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pageSize": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cursor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "pageSize"
+            ]
+          },
+          "timeRange": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fieldKey": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,62}$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "fieldKey",
+              "from",
+              "to"
+            ]
+          }
+        },
+        "required": [
+          "datasetId",
+          "metrics",
+          "dimensions",
+          "filters",
+          "groupBy",
+          "orderBy"
+        ]
+      },
+      "Filter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "in",
+              "between"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            ]
+          }
+        },
+        "required": [
+          "fieldKey",
+          "operator",
+          "value"
+        ]
+      },
+      "ReportDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "1.0"
+          },
+          "reportId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "datasetRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DatasetRef"
+            },
+            "maxItems": 10
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "fieldKey": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "type": {
+                  "enum": [
+                    "dateRange",
+                    "select"
+                  ]
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "fieldKey",
+                "type",
+                "options"
+              ]
+            },
+            "maxItems": 10
+          },
+          "queries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/BoundQuery"
+            },
+            "maxItems": 12
+          },
+          "chartDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ChartDefinition"
+            },
+            "maxItems": 20
+          },
+          "layout": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "columns": {
+                "const": 12
+              },
+              "gap": {
+                "enum": [
+                  16,
+                  20,
+                  24
+                ]
+              }
+            },
+            "required": [
+              "columns",
+              "gap"
+            ]
+          },
+          "theme": {
+            "enum": [
+              "studio-light",
+              "studio-dark"
+            ]
+          },
+          "refreshPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "enum": [
+                  "manual",
+                  "interval"
+                ]
+              },
+              "intervalSeconds": {
+                "type": "integer",
+                "minimum": 60,
+                "maximum": 3600
+              }
+            },
+            "required": [
+              "mode",
+              "intervalSeconds"
+            ]
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "reportId",
+          "title",
+          "datasetRefs",
+          "metrics",
+          "dimensions",
+          "filters",
+          "queries",
+          "chartDefinitions",
+          "layout",
+          "theme",
+          "refreshPolicy",
+          "notes"
+        ]
+      },
+      "ChartDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "type": {
+            "enum": [
+              "metric",
+              "table",
+              "bar",
+              "line",
+              "pie",
+              "ranking"
+            ]
+          },
+          "queryKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "categoryKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "valueKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "format": {
+            "enum": [
+              "number",
+              "currency",
+              "percent"
+            ]
+          },
+          "span": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "type",
+          "queryKey",
+          "valueKey",
+          "format",
+          "span"
+        ]
+      }
+    }
+  },
+  "StudioAppCreate": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "key": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]{1,62}$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "type": {
+        "enum": [
+          "REPORT",
+          "SITE"
+        ]
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "datasetRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/DatasetRef"
+        },
+        "maxItems": 10
+      },
+      "workspaceId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "key",
+      "name",
+      "type",
+      "description",
+      "datasetRefs",
+      "workspaceId"
+    ],
+    "$defs": {
+      "StudioAppCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "type": {
+            "enum": [
+              "REPORT",
+              "SITE"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "datasetRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DatasetRef"
+            },
+            "maxItems": 10
+          },
+          "workspaceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "type",
+          "description",
+          "datasetRefs",
+          "workspaceId"
+        ]
+      },
+      "DatasetRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "datasetId",
+          "datasetVersionId"
+        ]
+      }
+    }
+  },
+  "StudioReportCreate": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "appId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "key": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]{1,62}$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "required": [
+      "appId",
+      "key",
+      "name"
+    ],
+    "$defs": {
+      "StudioReportCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "appId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "appId",
+          "key",
+          "name"
+        ]
+      }
+    }
+  },
+  "ReportDefinition": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "schemaVersion": {
+        "const": "1.0"
+      },
+      "reportId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "datasetRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/DatasetRef"
+        },
+        "maxItems": 10
+      },
+      "metrics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,62}$"
+        },
+        "maxItems": 20
+      },
+      "dimensions": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,62}$"
+        },
+        "maxItems": 30
+      },
+      "filters": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "fieldKey": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "type": {
+              "enum": [
+                "dateRange",
+                "select"
+              ]
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "key",
+            "label",
+            "fieldKey",
+            "type",
+            "options"
+          ]
+        },
+        "maxItems": 10
+      },
+      "queries": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/BoundQuery"
+        },
+        "maxItems": 12
+      },
+      "chartDefinitions": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/ChartDefinition"
+        },
+        "maxItems": 20
+      },
+      "layout": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "columns": {
+            "const": 12
+          },
+          "gap": {
+            "enum": [
+              16,
+              20,
+              24
+            ]
+          }
+        },
+        "required": [
+          "columns",
+          "gap"
+        ]
+      },
+      "theme": {
+        "enum": [
+          "studio-light",
+          "studio-dark"
+        ]
+      },
+      "refreshPolicy": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "manual",
+              "interval"
+            ]
+          },
+          "intervalSeconds": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 3600
+          }
+        },
+        "required": [
+          "mode",
+          "intervalSeconds"
+        ]
+      },
+      "notes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "maxItems": 20
+      }
+    },
+    "required": [
+      "schemaVersion",
+      "reportId",
+      "title",
+      "datasetRefs",
+      "metrics",
+      "dimensions",
+      "filters",
+      "queries",
+      "chartDefinitions",
+      "layout",
+      "theme",
+      "refreshPolicy",
+      "notes"
+    ],
+    "$defs": {
+      "ReportDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "1.0"
+          },
+          "reportId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "datasetRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/DatasetRef"
+            },
+            "maxItems": 10
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "fieldKey": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "type": {
+                  "enum": [
+                    "dateRange",
+                    "select"
+                  ]
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "fieldKey",
+                "type",
+                "options"
+              ]
+            },
+            "maxItems": 10
+          },
+          "queries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/BoundQuery"
+            },
+            "maxItems": 12
+          },
+          "chartDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/ChartDefinition"
+            },
+            "maxItems": 20
+          },
+          "layout": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "columns": {
+                "const": 12
+              },
+              "gap": {
+                "enum": [
+                  16,
+                  20,
+                  24
+                ]
+              }
+            },
+            "required": [
+              "columns",
+              "gap"
+            ]
+          },
+          "theme": {
+            "enum": [
+              "studio-light",
+              "studio-dark"
+            ]
+          },
+          "refreshPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "enum": [
+                  "manual",
+                  "interval"
+                ]
+              },
+              "intervalSeconds": {
+                "type": "integer",
+                "minimum": 60,
+                "maximum": 3600
+              }
+            },
+            "required": [
+              "mode",
+              "intervalSeconds"
+            ]
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "reportId",
+          "title",
+          "datasetRefs",
+          "metrics",
+          "dimensions",
+          "filters",
+          "queries",
+          "chartDefinitions",
+          "layout",
+          "theme",
+          "refreshPolicy",
+          "notes"
+        ]
+      },
+      "DatasetRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "datasetId",
+          "datasetVersionId"
+        ]
+      },
+      "BoundQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "query": {
+            "$ref": "#/$defs/QuerySpec"
+          }
+        },
+        "required": [
+          "key",
+          "query"
+        ]
+      },
+      "QuerySpec": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30,
+            "uniqueItems": true
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Filter"
+            },
+            "maxItems": 30
+          },
+          "groupBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "direction"
+              ]
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Optional caller-requested result row count. No preset platform row ceiling; omit to avoid a row limit, or use pagination for incremental retrieval."
+          },
+          "pagination": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pageSize": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cursor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "pageSize"
+            ]
+          },
+          "timeRange": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fieldKey": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,62}$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "fieldKey",
+              "from",
+              "to"
+            ]
+          }
+        },
+        "required": [
+          "datasetId",
+          "metrics",
+          "dimensions",
+          "filters",
+          "groupBy",
+          "orderBy"
+        ]
+      },
+      "Filter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "in",
+              "between"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            ]
+          }
+        },
+        "required": [
+          "fieldKey",
+          "operator",
+          "value"
+        ]
+      },
+      "ChartDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "type": {
+            "enum": [
+              "metric",
+              "table",
+              "bar",
+              "line",
+              "pie",
+              "ranking"
+            ]
+          },
+          "queryKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "categoryKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "valueKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "format": {
+            "enum": [
+              "number",
+              "currency",
+              "percent"
+            ]
+          },
+          "span": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "type",
+          "queryKey",
+          "valueKey",
+          "format",
+          "span"
+        ]
+      }
+    }
+  },
+  "ReadServerWorkspaceFile": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "path": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160
+      }
+    },
+    "required": [
+      "path"
+    ],
+    "$defs": {
+      "ReadServerWorkspaceFile": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "path"
+        ]
+      }
+    }
+  },
+  "WriteServerWorkspace": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "files": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 1000,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "content": {
+              "type": "string",
+              "maxLength": 131072
+            }
+          },
+          "required": [
+            "path",
+            "content"
+          ]
+        }
+      }
+    },
+    "required": [
+      "revision",
+      "files"
+    ],
+    "$defs": {
+      "WriteServerWorkspace": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "content": {
+                  "type": "string",
+                  "maxLength": 131072
+                }
+              },
+              "required": [
+                "path",
+                "content"
+              ]
+            }
+          }
+        },
+        "required": [
+          "revision",
+          "files"
+        ]
+      }
+    }
+  },
+  "EditServerWorkspace": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "path": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160
+      },
+      "oldText": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 131072
+      },
+      "newText": {
+        "type": "string",
+        "maxLength": 131072
+      },
+      "replaceAll": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "revision",
+      "path",
+      "oldText",
+      "newText"
+    ],
+    "$defs": {
+      "EditServerWorkspace": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "oldText": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 131072
+          },
+          "newText": {
+            "type": "string",
+            "maxLength": 131072
+          },
+          "replaceAll": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "revision",
+          "path",
+          "oldText",
+          "newText"
+        ]
+      }
+    }
+  },
+  "RemoveServerWorkspaceFiles": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "paths": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 200,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        }
+      }
+    },
+    "required": [
+      "revision",
+      "paths"
+    ],
+    "$defs": {
+      "RemoveServerWorkspaceFiles": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "paths": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 200,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            }
+          }
+        },
+        "required": [
+          "revision",
+          "paths"
+        ]
+      }
+    }
+  },
+  "MoveServerWorkspaceFile": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "from": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160
+      },
+      "to": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160
+      }
+    },
+    "required": [
+      "revision",
+      "from",
+      "to"
+    ],
+    "$defs": {
+      "MoveServerWorkspaceFile": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "revision",
+          "from",
+          "to"
+        ]
+      }
+    }
+  },
+  "CheckoutServerWorkspace": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "versionId": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "required": [
+      "revision",
+      "versionId"
+    ],
+    "$defs": {
+      "CheckoutServerWorkspace": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "versionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "revision",
+          "versionId"
+        ]
+      }
+    }
+  },
+  "CommitServerWorkspace": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "revision": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2147483647
+      },
+      "message": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "required": [
+      "revision",
+      "message"
+    ],
+    "$defs": {
+      "CommitServerWorkspace": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "revision",
+          "message"
+        ]
+      }
+    }
+  },
+  "StudioDebugOpen": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "versionId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "viewport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "width",
+          "height"
+        ]
+      }
+    },
+    "required": [
+      "versionId"
+    ],
+    "$defs": {
+      "StudioDebugOpen": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "versionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "viewport": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "width": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ]
+          }
+        },
+        "required": [
+          "versionId"
+        ]
+      }
+    }
+  },
+  "StudioDebugAction": {
+    "oneOf": [
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "click"
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "hover"
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "fill"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "value"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "select"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "value"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "press"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "value"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "check"
+          },
+          "selector": {
+            "type": "string"
+          },
+          "checked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "selector",
+          "checked"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "scroll"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "x",
+          "y"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "resize"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "type",
+          "width",
+          "height"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "inspect"
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "selector"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "wait"
+          },
+          "milliseconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "selector": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "reload"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "evaluate"
+          },
+          "expression": {
+            "type": "string",
+            "minLength": 1,
+            "description": "JavaScript expression executed only inside the isolated browser app frame; no Node.js or server shell access."
+          }
+        },
+        "required": [
+          "type",
+          "expression"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "key_down"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "key"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "key_up"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "key"
+        ]
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "mouse"
+          },
+          "event": {
+            "enum": [
+              "move",
+              "click",
+              "down",
+              "up"
+            ]
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "event",
+          "x",
+          "y"
+        ]
+      }
+    ],
+    "$defs": {
+      "StudioDebugAction": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "click"
+              },
+              "selector": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "selector"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "hover"
+              },
+              "selector": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "selector"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "fill"
+              },
+              "selector": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "selector",
+              "value"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "select"
+              },
+              "selector": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "selector",
+              "value"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "press"
+              },
+              "selector": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "selector",
+              "value"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "check"
+              },
+              "selector": {
+                "type": "string"
+              },
+              "checked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "selector",
+              "checked"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "scroll"
+              },
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "type",
+              "x",
+              "y"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "resize"
+              },
+              "width": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "type",
+              "width",
+              "height"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "inspect"
+              },
+              "selector": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "selector"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "wait"
+              },
+              "milliseconds": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "selector": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "reload"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "evaluate"
+              },
+              "expression": {
+                "type": "string",
+                "minLength": 1,
+                "description": "JavaScript expression executed only inside the isolated browser app frame; no Node.js or server shell access."
+              }
+            },
+            "required": [
+              "type",
+              "expression"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "key_down"
+              },
+              "key": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "key"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "key_up"
+              },
+              "key": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "key"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "const": "mouse"
+              },
+              "event": {
+                "enum": [
+                  "move",
+                  "click",
+                  "down",
+                  "up"
+                ]
+              },
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "type",
+              "event",
+              "x",
+              "y"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "Stage06CreateRelease": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "appVersionId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "buildJobId": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "reason": {
+        "type": "string",
+        "minLength": 1
+      },
+      "testResults": {
+        "type": "string",
+        "minLength": 1
+      },
+      "targetDepartments": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "audienceUserIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "minItems": 1
+      },
+      "scopes": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/RequestedReleaseScope"
+        }
+      },
+      "approvalSteps": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/$defs/ReleaseStep"
+        },
+        "description": "申请页选择的顺序审批人。服务端校验当前组织和审批权限；实际审核身份始终取当前登录会话。省略时仅为兼容旧客户端读取应用默认流程。"
+      }
+    },
+    "required": [
+      "appVersionId",
+      "buildJobId",
+      "reason",
+      "testResults",
+      "targetDepartments",
+      "audienceUserIds",
+      "scopes"
+    ],
+    "$defs": {
+      "Stage06CreateRelease": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "appVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "buildJobId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "testResults": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetDepartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "audienceUserIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 1
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/RequestedReleaseScope"
+            }
+          },
+          "approvalSteps": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/ReleaseStep"
+            },
+            "description": "申请页选择的顺序审批人。服务端校验当前组织和审批权限；实际审核身份始终取当前登录会话。省略时仅为兼容旧客户端读取应用默认流程。"
+          }
+        },
+        "required": [
+          "appVersionId",
+          "buildJobId",
+          "reason",
+          "testResults",
+          "targetDepartments",
+          "audienceUserIds",
+          "scopes"
+        ]
+      },
+      "RequestedReleaseScope": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fieldKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "metricKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sensitiveFieldKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "maxRows": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        },
+        "required": [
+          "datasetVersionId",
+          "fieldKeys",
+          "metricKeys",
+          "sensitiveFieldKeys"
+        ]
+      },
+      "ReleaseStep": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roleKey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "approverUserId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "roleKey",
+          "label",
+          "approverUserId"
+        ]
+      }
+    }
+  }
+}

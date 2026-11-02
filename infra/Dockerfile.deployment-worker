@@ -1,0 +1,9 @@
+FROM node:24-bookworm-slim
+WORKDIR /app
+RUN npm install -g pnpm@10.12.1
+COPY . .
+RUN pnpm install --frozen-lockfile && pnpm --filter @eas/deployment-worker... build
+RUN mkdir -p /var/lib/eas/deployments && chown node:node /var/lib/eas/deployments
+USER node
+ENV DEPLOY_WORKER_HOST=0.0.0.0 DEPLOY_WORKER_PORT=4100 DEPLOY_ARTIFACT_DIR=/var/lib/eas/deployments
+CMD ["node","services/deployment-worker/dist/main.js"]

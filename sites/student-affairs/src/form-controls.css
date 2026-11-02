@@ -1,0 +1,55 @@
+.date-control {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  font-weight: 400;
+}
+.date-control > input {
+  position: relative;
+  width: 100%;
+  padding-right: 40px;
+  cursor: pointer;
+}
+.date-control > svg {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7d99;
+  pointer-events: none;
+}
+/* The native calendar button spans the field, including the date text and empty space. */
+.date-control > input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.date-control > input::-webkit-date-and-time-value {
+  text-align: left;
+}
+.date-control > input:disabled {
+  cursor: default;
+}
+.date-control:has(> input:disabled) > svg {
+  opacity: 0.5;
+}
+.form-grid label > select {
+  height: 41px;
+  width: 100%;
+  background-color: #fff;
+  color: #26354a;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.form-grid label > select option {
+  color: #26354a;
+  background: #fff;
+  font-size: 14px;
+}

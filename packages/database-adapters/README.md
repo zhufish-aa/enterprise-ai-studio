@@ -1,0 +1,5 @@
+# Database adapters
+
+仅供独立connector使用，浏览器、Harness和控制面不得导入。network检查批准DNS/CIDR并固定目标IP，秘密提供器读取TEST本地fixture或Vault环境路径。AdapterRegistry负责健康/定向元数据；GatewayExecutor负责当前授权计划的只读事务、RLS、EXPLAIN、流式上限和取消。gateway-compiler按语义白名单生成PG/MySQL/SQLServer参数化方言、SQL侧脱敏及有界分页，没有SQL/函数用户输入。
+
+Gateway真实验证PostgreSQL18.4，另外两类仅验证编译器、实际执行关闭。阶段02的MySQL/SQLServer驱动与元数据代码仍待真实实例。新增引擎需同时实现等价会话上下文、成本门、取消/字节限额与真实权限测试，不能只改枚举后标记已支持。业务模块通过CatalogQueryPort提供模型/连接计划，不导入这些驱动。

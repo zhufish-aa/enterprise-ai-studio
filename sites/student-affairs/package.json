@@ -1,0 +1,38 @@
+{
+  "name": "@eas/student-affairs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@eas/api-contract": "workspace:*",
+    "@eas/platform-sdk": "workspace:*",
+    "@tiptap/core": "3.32.1",
+    "@tiptap/extension-image": "3.32.1",
+    "@tiptap/extension-table": "3.32.1",
+    "@tiptap/extension-text-align": "3.32.1",
+    "@tiptap/extension-text-style": "3.32.1",
+    "@tiptap/pm": "3.32.1",
+    "@tiptap/react": "3.32.1",
+    "@tiptap/starter-kit": "3.32.1",
+    "docx-preview": "0.4.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "fastify": "5.12.7",
+    "pg": "8.23.1",
+    "ajv": "8.17.1",
+    "docx": "9.15.0",
+    "docxtemplater": "3.71.1",
+    "exceljs": "4.4.0",
+    "pizzip": "3.3.0",
+    "@xmldom/xmldom": "0.9.12"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@types/pg": "8.23.1"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@eas/report-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build"
+  },
+  "dependencies": {
+    "@eas/api-contract": "workspace:*",
+    "@eas/platform-sdk": "workspace:*",
+    "@eas/report-ui": "workspace:*",
+    "@eas/shared": "workspace:*",
+    "echarts": "6.1.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "vite": "8.3.5"
+  }
+}

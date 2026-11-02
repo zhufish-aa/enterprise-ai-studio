@@ -1,0 +1,5 @@
+{
+  "name":"@eas/preview-worker","version":"0.0.0","private":true,"type":"module",
+  "scripts":{"build":"tsc","typecheck":"tsc --noEmit","start":"node dist/main.js","browser:install":"playwright install chromium"},
+  "dependencies":{"@eas/api-contract":"workspace:*","@eas/connector-transport":"workspace:*","playwright":"1.64.1"}
+}

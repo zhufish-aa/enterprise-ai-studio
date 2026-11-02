@@ -1,0 +1,79 @@
+{
+  "organization": {
+    "id": "00000000-0000-4000-8000-000000000001",
+    "key": "replace_company",
+    "name": "替换为企业组织"
+  },
+  "users": [
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "issuer": "https://idp.example.internal/realms/company",
+      "subject": "replace-oidc-subject",
+      "displayName": "初始数据管理员"
+    }
+  ],
+  "roles": [
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "key": "catalog_admin",
+      "name": "数据目录管理员",
+      "permissions": [
+        "session.read",
+        "source.read",
+        "dataset.read",
+        "dataset.query.test",
+        "catalog.manage",
+        "connection.manage",
+        "mapping.manage",
+        "permission.manage",
+        "connection.test.test",
+        "connection.metadata.test",
+        "query.policy.manage",
+        "query.audit.read",
+        "query.diagnose"
+      ],
+      "userIds": [
+        "00000000-0000-4000-8000-000000000002"
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "name": "批准的销售测试端点",
+      "environment": "test",
+      "engine": "postgresql",
+      "host": "sales-test.db.example.internal",
+      "port": 5432,
+      "allowedCidrs": [
+        "10.24.1.18/32"
+      ],
+      "tlsServerName": "sales-test.db.example.internal",
+      "allowedDatabases": [
+        "sales_test"
+      ],
+      "allowedRelations": [
+        {
+          "schema": "sales",
+          "name": "orders"
+        },
+        {
+          "schema": "sales",
+          "name": "customers"
+        }
+      ]
+    }
+  ],
+  "credentialProfiles": [
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "label": "销售测试只读账号",
+      "environment": "test",
+      "engine": "postgresql",
+      "secretRef": "secret/data/test/sales-reader",
+      "endpointIds": [
+        "00000000-0000-4000-8000-000000000004"
+      ]
+    }
+  ]
+}

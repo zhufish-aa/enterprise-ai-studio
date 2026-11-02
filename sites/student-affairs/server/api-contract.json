@@ -1,0 +1,2076 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "学生事务中心 API",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "StudentArchive": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ]
+      },
+      "StudentCenterBootstrap": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "settings": {
+            "$ref": "#/components/schemas/StudentCenterSettings"
+          },
+          "currentUser": {
+            "$ref": "#/components/schemas/StudentCenterMember"
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "students": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "certificates": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "todayCertificates": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "students",
+              "certificates",
+              "todayCertificates"
+            ]
+          },
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentTemplate"
+            }
+          },
+          "recent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentCertificateSummary"
+            }
+          }
+        },
+        "required": [
+          "settings",
+          "currentUser",
+          "counts",
+          "templates",
+          "recent"
+        ]
+      },
+      "StudentCenterEnable": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schoolName": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "departmentName": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "adminUsername": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "adminPassword": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "departmentName",
+          "adminUsername",
+          "adminPassword"
+        ]
+      },
+      "StudentCenterLogin": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "StudentCenterMember": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "administrator",
+              "staff"
+            ]
+          }
+        },
+        "required": [
+          "userId",
+          "name",
+          "username",
+          "role"
+        ]
+      },
+      "StudentCenterMemberSave": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "administrator",
+              "staff",
+              "remove"
+            ]
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "StudentCenterMembers": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentCenterMember"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "StudentCenterPassword": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "currentPassword",
+          "password"
+        ]
+      },
+      "StudentCenterRequest": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.delete"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentTemplateDelete"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "bootstrap"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.search"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentSearch"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.save"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentSave"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.archive"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentArchive"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.import"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentImport"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.save"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentTemplateSave"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.upload"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentTemplateUpload"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.file"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.create"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCertificateCreate"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.search"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCertificateSearch"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.get"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "settings.save"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCenterSettingsSave"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "members.list"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "members.save"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCenterMemberSave"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.session"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.login"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCenterLogin"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.logout"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.password"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCenterPassword"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.preview"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentCertificateCreate"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.import"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentTemplateImport"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.export"
+              },
+              "payload": {
+                "$ref": "#/components/schemas/StudentTemplateExport"
+              }
+            },
+            "required": [
+              "action",
+              "payload"
+            ]
+          }
+        ]
+      },
+      "StudentCenterResponse": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.delete"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentTemplateDeleteResult"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "bootstrap"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterBootstrap"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.search"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentSearchResult"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.save"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentRecord"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.archive"
+              },
+              "result": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "archived": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "archived"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "students.import"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentImportResult"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.save"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentTemplate"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.upload"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentTemplate"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.file"
+              },
+              "result": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "contentBase64": {
+                    "type": "string"
+                  },
+                  "fileName": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "contentBase64",
+                  "fileName"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.create"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCertificate"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.search"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCertificateSearchResult"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.get"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCertificate"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "settings.save"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterSettings"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "members.list"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterMembers"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "members.save"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterMembers"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.session"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterSession"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.login"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterSession"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.logout"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCenterSession"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "auth.password"
+              },
+              "result": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "changed": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "changed"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "certificates.preview"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentCertificatePreview"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.import"
+              },
+              "result": {
+                "$ref": "#/components/schemas/StudentTemplateImportResult"
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string",
+                "const": "templates.export"
+              },
+              "result": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "contentBase64": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "fileName",
+                  "contentBase64"
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "result"
+            ]
+          }
+        ]
+      },
+      "StudentCenterSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "user": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StudentCenterMember"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "departmentName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "user",
+          "departmentName"
+        ]
+      },
+      "StudentCenterSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schoolName": {
+            "type": "string"
+          },
+          "departmentName": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          },
+          "academicYear": {
+            "type": "string"
+          },
+          "holidayStart": {
+            "type": "string"
+          },
+          "holidayEnd": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "schoolName",
+          "departmentName",
+          "signature",
+          "academicYear",
+          "holidayStart",
+          "holidayEnd",
+          "revision"
+        ]
+      },
+      "StudentCenterSettingsSave": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schoolName": {
+            "type": "string"
+          },
+          "departmentName": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          },
+          "academicYear": {
+            "type": "string"
+          },
+          "holidayStart": {
+            "type": "string"
+          },
+          "holidayEnd": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "schoolName",
+          "departmentName",
+          "signature",
+          "academicYear",
+          "holidayStart",
+          "holidayEnd",
+          "revision"
+        ]
+      },
+      "StudentCertificate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/StudentCertificateSummary"
+          },
+          "template": {
+            "$ref": "#/components/schemas/StudentTemplate"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "contentBase64": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fileName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "summary",
+          "template",
+          "fields",
+          "contentBase64",
+          "fileName"
+        ]
+      },
+      "StudentCertificateCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "studentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "templateId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issueDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          }
+        },
+        "required": [
+          "studentId",
+          "templateId",
+          "issueDate",
+          "fields"
+        ]
+      },
+      "StudentCertificatePreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "template": {
+            "$ref": "#/components/schemas/StudentTemplate"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "contentBase64": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fileName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "template",
+          "fields",
+          "contentBase64",
+          "fileName"
+        ]
+      },
+      "StudentCertificateSearch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": []
+      },
+      "StudentCertificateSearchResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentCertificateSummary"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ]
+      },
+      "StudentCertificateSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "number": {
+            "type": "string"
+          },
+          "studentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "studentNumber": {
+            "type": "string"
+          },
+          "studentName": {
+            "type": "string"
+          },
+          "templateName": {
+            "type": "string"
+          },
+          "issueDate": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "number",
+          "studentId",
+          "studentNumber",
+          "studentName",
+          "templateName",
+          "issueDate",
+          "createdAt",
+          "createdBy"
+        ]
+      },
+      "StudentImport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "contentBase64": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "preview",
+              "commit"
+            ]
+          },
+          "updateExisting": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "fileName",
+          "contentBase64",
+          "mode"
+        ]
+      },
+      "StudentImportResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "valid": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "created": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "updated": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "skipped": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sample": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentProfile"
+            }
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "row": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "row",
+                "message"
+              ]
+            }
+          },
+          "committed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "total",
+          "valid",
+          "created",
+          "updated",
+          "skipped",
+          "columns",
+          "sample",
+          "issues",
+          "committed"
+        ]
+      },
+      "StudentProfile": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "properties": {
+          "studentNumber": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "学号"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "姓名"
+          },
+          "gender": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "性别"
+          },
+          "birthDate": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "出生日期"
+          },
+          "idNumber": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "证件号码"
+          },
+          "className": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "班级"
+          },
+          "admissionDate": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "入学时间"
+          },
+          "graduationDate": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "毕业时间"
+          },
+          "withdrawalDate": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "肄业时间"
+          },
+          "expectedGraduationDate": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "预计毕业时间"
+          },
+          "grade": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "就读年级"
+          },
+          "academicYear": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "目前就读学年"
+          },
+          "holidayStart": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "放假开始时间"
+          },
+          "holidayEnd": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "放假结束时间"
+          },
+          "schoolName": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "学校名称"
+          },
+          "ethnicity": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "民族"
+          },
+          "department": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "院系"
+          },
+          "major": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "专业"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "学籍状态"
+          },
+          "idType": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "studentNumber",
+          "name"
+        ]
+      },
+      "StudentRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "profile": {
+            "$ref": "#/components/schemas/StudentProfile"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "profile",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "StudentRichDocument": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0"
+          },
+          "type": {
+            "type": "string",
+            "const": "doc"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentRichNode"
+            }
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "type",
+          "content"
+        ]
+      },
+      "StudentRichMark": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "bold",
+              "italic",
+              "underline",
+              "strike",
+              "textStyle"
+            ]
+          },
+          "attrs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fontFamily": {
+                "type": "string",
+                "enum": [
+                  "SimSun",
+                  "SimHei",
+                  "Microsoft YaHei",
+                  "FangSong",
+                  "KaiTi",
+                  "Arial"
+                ]
+              },
+              "fontSize": {
+                "type": "string",
+                "pattern": "^[0-9]+(?:\\.[0-9]+)?pt$"
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              }
+            },
+            "required": []
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "StudentRichNode": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "paragraph",
+              "heading",
+              "text",
+              "hardBreak",
+              "horizontalRule",
+              "bulletList",
+              "orderedList",
+              "listItem",
+              "templateField",
+              "table",
+              "tableRow",
+              "tableCell",
+              "tableHeader",
+              "image"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "attrs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "textAlign": {
+                "type": "string",
+                "enum": [
+                  "left",
+                  "center",
+                  "right",
+                  "justify"
+                ]
+              },
+              "lineHeight": {
+                "type": "string",
+                "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+              },
+              "firstLineIndent": {
+                "type": "number",
+                "minimum": 0
+              },
+              "spaceBefore": {
+                "type": "number",
+                "minimum": 0
+              },
+              "spaceAfter": {
+                "type": "number",
+                "minimum": 0
+              },
+              "level": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "fieldKey": {
+                "type": "string"
+              },
+              "src": {
+                "type": "string",
+                "pattern": "^data:image/(?:png|jpeg|gif|bmp);base64,[A-Za-z0-9+/]+={0,2}$"
+              },
+              "width": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "height": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "alt": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "colspan": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "rowspan": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "colwidth": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            },
+            "required": []
+          },
+          "marks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentRichMark"
+            }
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentRichNode"
+            }
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "StudentSave": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "profile": {
+            "$ref": "#/components/schemas/StudentProfile"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "StudentSearch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyword": {
+            "type": "string"
+          },
+          "studentNumber": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "className": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": []
+      },
+      "StudentSearchResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentRecord"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize",
+          "classes"
+        ]
+      },
+      "StudentTemplate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/StudentTemplateKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "text",
+              "docx"
+            ]
+          },
+          "body": {
+            "type": "string"
+          },
+          "requiredFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "originalFileName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "document": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/StudentRichDocument"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "format",
+          "body",
+          "requiredFields",
+          "version",
+          "originalFileName",
+          "createdAt"
+        ]
+      },
+      "StudentTemplateDelete": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "StudentTemplateDeleteResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "deleted": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "required": [
+          "deleted"
+        ]
+      },
+      "StudentTemplateExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "document": {
+            "$ref": "#/components/schemas/StudentRichDocument"
+          }
+        },
+        "required": [
+          "name",
+          "document"
+        ]
+      },
+      "StudentTemplateImport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "contentBase64": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fileName",
+          "contentBase64"
+        ]
+      },
+      "StudentTemplateImportResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "document": {
+            "$ref": "#/components/schemas/StudentRichDocument"
+          },
+          "body": {
+            "type": "string"
+          },
+          "suggestedName": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "document",
+          "body",
+          "suggestedName",
+          "notes"
+        ]
+      },
+      "StudentTemplateKind": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*$"
+      },
+      "StudentTemplateSave": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/StudentTemplateKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "expectedId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "document": {
+            "$ref": "#/components/schemas/StudentRichDocument"
+          }
+        },
+        "required": [
+          "kind",
+          "name",
+          "body"
+        ]
+      },
+      "StudentTemplateUpload": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/StudentTemplateKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "contentBase64": {
+            "type": "string"
+          },
+          "expectedId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "kind",
+          "name",
+          "fileName",
+          "contentBase64"
+        ]
+      }
+    }
+  }
+}

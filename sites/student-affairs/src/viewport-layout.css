@@ -1,0 +1,71 @@
+@media screen {
+  .workbench {
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    overflow-y: auto;
+  }
+
+  .sidebar > .brand,
+  .sidebar > .sidebar-label,
+  .sidebar > nav,
+  .sidebar > .sidebar-bottom {
+    flex-shrink: 0;
+  }
+
+  .certificate-page-issue {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .certificate-page-issue > .page-heading {
+    flex: none;
+  }
+
+  .certificate-page-issue > .issue-grid {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .issue-controls {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .issue-fields {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .issue-bottom {
+    position: static;
+    flex: none;
+    background: #fff;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .certificate-page-issue {
+    display: block;
+    height: auto;
+  }
+
+  .issue-controls {
+    display: block;
+    overflow: visible;
+  }
+
+  .issue-fields {
+    overflow: visible;
+  }
+}

@@ -1,0 +1,26 @@
+# Combine with compose.yaml after provisioning internal PKI and secret injection.
+# This fragment does not connect to or provision a production database.
+services:
+  deployment-worker:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.deployment-worker
+    profiles: [release]
+    environment:
+      NODE_ENV: production
+      DEPLOY_WORKER_HOST: 0.0.0.0
+      DEPLOY_WORKER_PORT: 4100
+      DEPLOY_WORKER_KEY: ${DEPLOY_WORKER_KEY:?Inject deployment signing key}
+      DEPLOY_ARTIFACT_DIR: /var/lib/eas/deployments
+      DEPLOY_TLS_CERT: /run/eas-tls/server.pem
+      DEPLOY_TLS_KEY: /run/eas-tls/server-key.pem
+      DEPLOY_TLS_CA: /run/eas-tls/ca.pem
+    volumes:
+      - ${DEPLOY_CERT_DIR:?Provision deployment certificates}:/run/eas-tls:ro
+      - deployment-artifacts:/var/lib/eas/deployments
+    networks: [control]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+volumes:
+  deployment-artifacts:

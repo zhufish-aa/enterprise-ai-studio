@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/components/schemas/QuerySpec",
+  "components": {
+    "schemas": {
+      "QuerySpec": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30,
+            "uniqueItems": true
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "maxItems": 30
+          },
+          "groupBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "direction"
+              ]
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Optional caller-requested result row count. No preset platform row ceiling; omit to avoid a row limit, or use pagination for incremental retrieval."
+          },
+          "pagination": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pageSize": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cursor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "pageSize"
+            ]
+          },
+          "timeRange": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fieldKey": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,62}$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "fieldKey",
+              "from",
+              "to"
+            ]
+          }
+        },
+        "required": [
+          "datasetId",
+          "metrics",
+          "dimensions",
+          "filters",
+          "groupBy",
+          "orderBy"
+        ]
+      },
+      "Filter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "in",
+              "between"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            ]
+          }
+        },
+        "required": [
+          "fieldKey",
+          "operator",
+          "value"
+        ]
+      }
+    }
+  }
+}

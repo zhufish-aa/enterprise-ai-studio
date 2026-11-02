@@ -1,0 +1,219 @@
+/* Shared visual hierarchy for the portal; generated sites keep their own typography. */
+:root {
+  --text: #1b2637;
+  --muted: #526074;
+  --line: #e2e7ee;
+  --subtle: #f7f9fc;
+  --blue: #3e5bd3;
+  --blue-soft: #eef2ff;
+  --danger: #a72e43;
+  font-size: 14px;
+}
+.workspace-content {
+  background: #f7f9fc;
+}
+.sidebar {
+  background: #f8fafc;
+}
+.sidebar .brand > span {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #19283e;
+  font-weight: 650;
+}
+.sidebar nav > button {
+  font-size: 14px;
+  color: #344054;
+  font-weight: 500;
+}
+.sidebar nav > button.active {
+  color: #304ec2;
+  font-weight: 650;
+  background: #eaf0ff;
+}
+.sidebar-secondary {
+  font-size: 13px;
+  color: #344054;
+}
+.sidebar-section-label {
+  color: #596679;
+  font-size: 11px;
+}
+.sidebar-system-status,
+.sidebar-system-status code {
+  font-size: 12px;
+  color: #526074;
+}
+.user-profile strong {
+  font-size: 14px;
+  color: #1d2939;
+  font-weight: 600;
+}
+.user-profile small {
+  font-size: 12px;
+  color: #526074;
+}
+.breadcrumb {
+  font-size: 13px;
+  color: #526074;
+}
+.breadcrumb strong {
+  color: #27364b;
+  font-weight: 600;
+}
+.page-heading p {
+  font-size: 14px;
+  color: #526074;
+}
+.page-heading .eyebrow {
+  font-size: 11px;
+  color: #526074;
+  font-weight: 600;
+}
+.button {
+  height: 36px;
+  font-size: 13px;
+  font-weight: 550;
+  border-radius: 7px;
+}
+.error-banner {
+  color: #a72e43;
+  font-size: 13px;
+  border-color: #edcbd2;
+  background: #fff7f8;
+  border-radius: 8px;
+}
+.error-banner > svg {
+  flex-shrink: 0;
+}
+.resource-table td,
+.row-entity strong {
+  font-size: 14px;
+  color: #263449;
+}
+.resource-table th {
+  font-size: 12px;
+  color: #526074;
+  font-weight: 600;
+}
+.row-entity strong {
+  font-weight: 600;
+}
+.resource-table td small,
+.resource-table td code,
+.row-entity code {
+  font-size: 12px;
+  color: #526074;
+}
+.inspector-title h2 {
+  font-size: 16px;
+  color: #1d2939;
+  font-weight: 600;
+}
+.section-heading h3,
+.field > span {
+  color: #27364b;
+}
+.studio-project-strip > button {
+  min-width: 210px;
+  padding: 11px 13px;
+  border-radius: 10px;
+}
+.studio-project-strip strong {
+  color: #1d2939;
+  font-size: 14px;
+  font-weight: 600;
+}
+.studio-project-strip small {
+  color: #526074;
+  font-size: 12px;
+}
+.studio-tabs button {
+  color: #48566b;
+  font-size: 13px;
+  font-weight: 500;
+}
+.studio-tabs button.active {
+  color: #304ec2;
+  font-weight: 600;
+}
+.studio-canvas-toolbar select {
+  font-size: 12px;
+  color: #344054;
+}
+.studio-assistant {
+  background: #fff;
+}
+.studio-assistant strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #263449;
+}
+.studio-assistant-title small {
+  font-size: 12px;
+  color: #526074;
+}
+.studio-prompt-label,
+.studio-resource-section h3 {
+  color: #48566b;
+  font-size: 12px;
+}
+.studio-assistant textarea {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #263449;
+  border-color: #d4dce9;
+}
+.studio-assistant > .button {
+  font-size: 13px;
+}
+.studio-helper,
+.studio-release-card p,
+.studio-resource small {
+  font-size: 12px;
+  color: #526074;
+}
+.studio-resource strong {
+  font-size: 13px;
+  color: #344054;
+}
+.studio-release-card strong {
+  font-size: 13px;
+  color: #27364b;
+}
+.studio-history strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.studio-history small,
+.studio-build-log {
+  font-size: 12px;
+  color: #526074;
+}
+.studio-test-pill {
+  font-size: 10px;
+  color: #3e5aa4;
+  border-color: #d5def0;
+}
+.server-editor > header h2 {
+  color: #1d2939;
+  font-weight: 600;
+}
+.server-editor > header p,
+.server-editor-tools small,
+.source-tree-count {
+  color: #526074;
+}
+@media (min-width: 1251px) {
+  .studio-workspace {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+}
+@media (max-width: 700px) {
+  .studio-project-strip > button {
+    min-width: 190px;
+  }
+  .studio-project-strip strong {
+    font-size: 13px;
+  }
+}

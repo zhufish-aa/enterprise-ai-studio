@@ -1,0 +1,3 @@
+# Keep immutable migration checksums identical across Windows and Linux.
+infra/migrations/*.sql -text
+sites/*/db/*.sql -text

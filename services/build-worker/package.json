@@ -1,0 +1,37 @@
+{
+  "name": "@eas/build-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@eas/api-contract": "workspace:*",
+    "@eas/connector-transport": "workspace:*",
+    "@eas/platform-sdk": "workspace:*",
+    "@eas/report-ui": "workspace:*",
+    "@eas/shared": "workspace:*",
+    "@tiptap/core": "3.32.1",
+    "@tiptap/extension-image": "3.32.1",
+    "@tiptap/extension-table": "3.32.1",
+    "@tiptap/extension-text-align": "3.32.1",
+    "@tiptap/extension-text-style": "3.32.1",
+    "@tiptap/pm": "3.32.1",
+    "@tiptap/react": "3.32.1",
+    "@tiptap/starter-kit": "3.32.1",
+    "docx-preview": "0.4.1",
+    "echarts": "6.1.0",
+    "esbuild": "0.27.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

@@ -1,0 +1,14 @@
+**/node_modules/**
+**/dist/**
+**/dist-*/**
+work/**
+outputs/**
+release/**
+infra/migrations/**
+packages/api-contract/src/generated.ts
+packages/api-contract/report.schema.json
+packages/harness-plugin/src/*schemas.json
+packages/harness-plugin/skills/enterprise-sites/references/*.schema.json
+packages/mcp-server/src/schemas.json
+sites/student-affairs/shared/contracts.ts
+pnpm-lock.yaml

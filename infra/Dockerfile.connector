@@ -1,0 +1,10 @@
+FROM node:24-bookworm-slim AS build
+WORKDIR /workspace
+RUN npm install --global pnpm@10.12.1
+COPY . .
+RUN pnpm install --frozen-lockfile && pnpm --filter @eas/query-worker... build
+FROM build AS runtime
+ENV NODE_ENV=production CATALOG_WORKER_HOST=0.0.0.0 CATALOG_WORKER_PORT=3100
+USER node
+EXPOSE 3100
+CMD ["node", "services/query-worker/dist/main.js"]

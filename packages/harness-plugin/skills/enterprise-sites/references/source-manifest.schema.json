@@ -1,0 +1,522 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/components/schemas/SourceManifest",
+  "components": {
+    "schemas": {
+      "SourceManifest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "1.0"
+          },
+          "entrypoint": {
+            "const": "src/main.tsx"
+          },
+          "datasetRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetRef"
+            },
+            "maxItems": 10
+          },
+          "queries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BoundQuery"
+            },
+            "maxItems": 12
+          },
+          "report": {
+            "$ref": "#/components/schemas/ReportDefinition"
+          },
+          "capabilities": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "student-center"
+              ]
+            },
+            "description": "Explicit platform-managed business capabilities required by this immutable version."
+          },
+          "runtime": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "node24-http-v1"
+              },
+              "entrypoint": {
+                "type": "string",
+                "pattern": "^server/[a-zA-Z0-9_/-]+\\.ts$"
+              },
+              "dataSource": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{0,62}$"
+              }
+            },
+            "required": [
+              "kind",
+              "entrypoint",
+              "dataSource"
+            ]
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "entrypoint",
+          "datasetRefs",
+          "queries"
+        ]
+      },
+      "DatasetRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "datasetId",
+          "datasetVersionId"
+        ]
+      },
+      "BoundQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "query": {
+            "$ref": "#/components/schemas/QuerySpec"
+          }
+        },
+        "required": [
+          "key",
+          "query"
+        ]
+      },
+      "QuerySpec": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "datasetVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30,
+            "uniqueItems": true
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "maxItems": 30
+          },
+          "groupBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "direction"
+              ]
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Optional caller-requested result row count. No preset platform row ceiling; omit to avoid a row limit, or use pagination for incremental retrieval."
+          },
+          "pagination": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pageSize": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cursor": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "pageSize"
+            ]
+          },
+          "timeRange": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "fieldKey": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,62}$"
+              },
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "fieldKey",
+              "from",
+              "to"
+            ]
+          }
+        },
+        "required": [
+          "datasetId",
+          "metrics",
+          "dimensions",
+          "filters",
+          "groupBy",
+          "orderBy"
+        ]
+      },
+      "Filter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fieldKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "in",
+              "between"
+            ]
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 100
+              }
+            ]
+          }
+        },
+        "required": [
+          "fieldKey",
+          "operator",
+          "value"
+        ]
+      },
+      "ReportDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "1.0"
+          },
+          "reportId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "datasetRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetRef"
+            },
+            "maxItems": 10
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 20
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,62}$"
+            },
+            "maxItems": 30
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "fieldKey": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,62}$"
+                },
+                "type": {
+                  "enum": [
+                    "dateRange",
+                    "select"
+                  ]
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "fieldKey",
+                "type",
+                "options"
+              ]
+            },
+            "maxItems": 10
+          },
+          "queries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BoundQuery"
+            },
+            "maxItems": 12
+          },
+          "chartDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChartDefinition"
+            },
+            "maxItems": 20
+          },
+          "layout": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "columns": {
+                "const": 12
+              },
+              "gap": {
+                "enum": [
+                  16,
+                  20,
+                  24
+                ]
+              }
+            },
+            "required": [
+              "columns",
+              "gap"
+            ]
+          },
+          "theme": {
+            "enum": [
+              "studio-light",
+              "studio-dark"
+            ]
+          },
+          "refreshPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "enum": [
+                  "manual",
+                  "interval"
+                ]
+              },
+              "intervalSeconds": {
+                "type": "integer",
+                "minimum": 60,
+                "maximum": 3600
+              }
+            },
+            "required": [
+              "mode",
+              "intervalSeconds"
+            ]
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "reportId",
+          "title",
+          "datasetRefs",
+          "metrics",
+          "dimensions",
+          "filters",
+          "queries",
+          "chartDefinitions",
+          "layout",
+          "theme",
+          "refreshPolicy",
+          "notes"
+        ]
+      },
+      "ChartDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "type": {
+            "enum": [
+              "metric",
+              "table",
+              "bar",
+              "line",
+              "pie",
+              "ranking"
+            ]
+          },
+          "queryKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "categoryKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "valueKey": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,62}$"
+          },
+          "format": {
+            "enum": [
+              "number",
+              "currency",
+              "percent"
+            ]
+          },
+          "span": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "type",
+          "queryKey",
+          "valueKey",
+          "format",
+          "span"
+        ]
+      }
+    }
+  }
+}

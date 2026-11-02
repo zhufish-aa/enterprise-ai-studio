@@ -1,0 +1,1 @@
+{"name":"@eas/platform-sdk","version":"0.1.0","private":true,"type":"module","exports":{".":{"types":"./dist/index.d.ts","import":"./dist/index.js"},"./runtime":{"types":"./dist/runtime.d.ts","import":"./dist/runtime.js"}},"scripts":{"build":"tsc","typecheck":"tsc --noEmit"},"dependencies":{"@eas/api-contract":"workspace:*"}}

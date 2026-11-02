@@ -1,0 +1,6 @@
+{
+  "schemaVersion":"1.0",
+  "entrypoint":"src/main.tsx",
+  "datasetRefs":[{"datasetId":"00000000-0000-4000-8000-000000000001","datasetVersionId":"00000000-0000-4000-8000-000000000002"}],
+  "queries":[{"key":"sales_by_region","query":{"datasetId":"00000000-0000-4000-8000-000000000001","datasetVersionId":"00000000-0000-4000-8000-000000000002","metrics":["sales_total"],"dimensions":["region"],"filters":[],"groupBy":["region"],"orderBy":[{"key":"sales_total","direction":"desc"}],"limit":20}}]
+}

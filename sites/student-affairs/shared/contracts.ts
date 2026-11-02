@@ -1,0 +1,521 @@
+export type paths = Record<string, never>;
+export type webhooks = Record<string, never>;
+export interface components {
+    schemas: {
+        StudentArchive: {
+            /** Format: uuid */
+            id: string;
+            revision: number;
+        };
+        StudentCenterBootstrap: {
+            settings: components["schemas"]["StudentCenterSettings"];
+            currentUser: components["schemas"]["StudentCenterMember"];
+            counts: {
+                students: number;
+                certificates: number;
+                todayCertificates: number;
+            };
+            templates: components["schemas"]["StudentTemplate"][];
+            recent: components["schemas"]["StudentCertificateSummary"][];
+        };
+        StudentCenterEnable: {
+            schoolName?: string;
+            departmentName: string;
+            adminUsername: string;
+            adminPassword: string;
+        };
+        StudentCenterLogin: {
+            username: string;
+            password: string;
+        };
+        StudentCenterMember: {
+            /** Format: uuid */
+            userId: string;
+            name: string;
+            username: string;
+            /** @enum {string} */
+            role: "administrator" | "staff";
+        };
+        StudentCenterMemberSave: {
+            /** Format: uuid */
+            userId?: string;
+            username?: string;
+            name?: string;
+            password?: string;
+            /** @enum {string} */
+            role: "administrator" | "staff" | "remove";
+        };
+        StudentCenterMembers: {
+            items: components["schemas"]["StudentCenterMember"][];
+        };
+        StudentCenterPassword: {
+            currentPassword: string;
+            password: string;
+        };
+        StudentCenterRequest: {
+            /** @constant */
+            action: "templates.delete";
+            payload: components["schemas"]["StudentTemplateDelete"];
+        } | {
+            /** @constant */
+            action: "bootstrap";
+            payload: Record<string, never>;
+        } | {
+            /** @constant */
+            action: "students.search";
+            payload: components["schemas"]["StudentSearch"];
+        } | {
+            /** @constant */
+            action: "students.save";
+            payload: components["schemas"]["StudentSave"];
+        } | {
+            /** @constant */
+            action: "students.archive";
+            payload: components["schemas"]["StudentArchive"];
+        } | {
+            /** @constant */
+            action: "students.import";
+            payload: components["schemas"]["StudentImport"];
+        } | {
+            /** @constant */
+            action: "templates.save";
+            payload: components["schemas"]["StudentTemplateSave"];
+        } | {
+            /** @constant */
+            action: "templates.upload";
+            payload: components["schemas"]["StudentTemplateUpload"];
+        } | {
+            /** @constant */
+            action: "templates.file";
+            payload: {
+                /** Format: uuid */
+                id: string;
+            };
+        } | {
+            /** @constant */
+            action: "certificates.create";
+            payload: components["schemas"]["StudentCertificateCreate"];
+        } | {
+            /** @constant */
+            action: "certificates.search";
+            payload: components["schemas"]["StudentCertificateSearch"];
+        } | {
+            /** @constant */
+            action: "certificates.get";
+            payload: {
+                /** Format: uuid */
+                id: string;
+            };
+        } | {
+            /** @constant */
+            action: "settings.save";
+            payload: components["schemas"]["StudentCenterSettingsSave"];
+        } | {
+            /** @constant */
+            action: "members.list";
+            payload: Record<string, never>;
+        } | {
+            /** @constant */
+            action: "members.save";
+            payload: components["schemas"]["StudentCenterMemberSave"];
+        } | {
+            /** @constant */
+            action: "auth.session";
+            payload: Record<string, never>;
+        } | {
+            /** @constant */
+            action: "auth.login";
+            payload: components["schemas"]["StudentCenterLogin"];
+        } | {
+            /** @constant */
+            action: "auth.logout";
+            payload: Record<string, never>;
+        } | {
+            /** @constant */
+            action: "auth.password";
+            payload: components["schemas"]["StudentCenterPassword"];
+        } | {
+            /** @constant */
+            action: "certificates.preview";
+            payload: components["schemas"]["StudentCertificateCreate"];
+        } | {
+            /** @constant */
+            action: "templates.import";
+            payload: components["schemas"]["StudentTemplateImport"];
+        } | {
+            /** @constant */
+            action: "templates.export";
+            payload: components["schemas"]["StudentTemplateExport"];
+        };
+        StudentCenterResponse: {
+            /** @constant */
+            action: "templates.delete";
+            result: components["schemas"]["StudentTemplateDeleteResult"];
+        } | {
+            /** @constant */
+            action: "bootstrap";
+            result: components["schemas"]["StudentCenterBootstrap"];
+        } | {
+            /** @constant */
+            action: "students.search";
+            result: components["schemas"]["StudentSearchResult"];
+        } | {
+            /** @constant */
+            action: "students.save";
+            result: components["schemas"]["StudentRecord"];
+        } | {
+            /** @constant */
+            action: "students.archive";
+            result: {
+                archived: boolean;
+            };
+        } | {
+            /** @constant */
+            action: "students.import";
+            result: components["schemas"]["StudentImportResult"];
+        } | {
+            /** @constant */
+            action: "templates.save";
+            result: components["schemas"]["StudentTemplate"];
+        } | {
+            /** @constant */
+            action: "templates.upload";
+            result: components["schemas"]["StudentTemplate"];
+        } | {
+            /** @constant */
+            action: "templates.file";
+            result: {
+                contentBase64: string;
+                fileName: string;
+            };
+        } | {
+            /** @constant */
+            action: "certificates.create";
+            result: components["schemas"]["StudentCertificate"];
+        } | {
+            /** @constant */
+            action: "certificates.search";
+            result: components["schemas"]["StudentCertificateSearchResult"];
+        } | {
+            /** @constant */
+            action: "certificates.get";
+            result: components["schemas"]["StudentCertificate"];
+        } | {
+            /** @constant */
+            action: "settings.save";
+            result: components["schemas"]["StudentCenterSettings"];
+        } | {
+            /** @constant */
+            action: "members.list";
+            result: components["schemas"]["StudentCenterMembers"];
+        } | {
+            /** @constant */
+            action: "members.save";
+            result: components["schemas"]["StudentCenterMembers"];
+        } | {
+            /** @constant */
+            action: "auth.session";
+            result: components["schemas"]["StudentCenterSession"];
+        } | {
+            /** @constant */
+            action: "auth.login";
+            result: components["schemas"]["StudentCenterSession"];
+        } | {
+            /** @constant */
+            action: "auth.logout";
+            result: components["schemas"]["StudentCenterSession"];
+        } | {
+            /** @constant */
+            action: "auth.password";
+            result: {
+                changed: boolean;
+            };
+        } | {
+            /** @constant */
+            action: "certificates.preview";
+            result: components["schemas"]["StudentCertificatePreview"];
+        } | {
+            /** @constant */
+            action: "templates.import";
+            result: components["schemas"]["StudentTemplateImportResult"];
+        } | {
+            /** @constant */
+            action: "templates.export";
+            result: {
+                fileName: string;
+                contentBase64: string;
+            };
+        };
+        StudentCenterSession: {
+            user: components["schemas"]["StudentCenterMember"] | null;
+            departmentName: string;
+        };
+        StudentCenterSettings: {
+            schoolName: string;
+            departmentName: string;
+            signature: string;
+            academicYear: string;
+            holidayStart: string;
+            holidayEnd: string;
+            revision: number;
+        };
+        StudentCenterSettingsSave: {
+            schoolName: string;
+            departmentName: string;
+            signature: string;
+            academicYear: string;
+            holidayStart: string;
+            holidayEnd: string;
+            revision: number;
+        };
+        StudentCertificate: {
+            summary: components["schemas"]["StudentCertificateSummary"];
+            template: components["schemas"]["StudentTemplate"];
+            fields: {
+                [key: string]: string;
+            };
+            contentBase64: string | null;
+            fileName: string;
+        };
+        StudentCertificateCreate: {
+            /** Format: uuid */
+            studentId: string;
+            /** Format: uuid */
+            templateId: string;
+            issueDate: string;
+            fields: {
+                [key: string]: string;
+            };
+        };
+        StudentCertificatePreview: {
+            template: components["schemas"]["StudentTemplate"];
+            fields: {
+                [key: string]: string;
+            };
+            contentBase64: string | null;
+            fileName: string;
+        };
+        StudentCertificateSearch: {
+            keyword?: string;
+            page?: number;
+            pageSize?: number;
+        };
+        StudentCertificateSearchResult: {
+            items: components["schemas"]["StudentCertificateSummary"][];
+            total: number;
+            page: number;
+            pageSize: number;
+        };
+        StudentCertificateSummary: {
+            /** Format: uuid */
+            id: string;
+            number: string;
+            /** Format: uuid */
+            studentId: string;
+            studentNumber: string;
+            studentName: string;
+            templateName: string;
+            issueDate: string;
+            createdAt: string;
+            createdBy: string;
+        };
+        StudentImport: {
+            fileName: string;
+            contentBase64: string;
+            /** @enum {string} */
+            mode: "preview" | "commit";
+            updateExisting?: boolean;
+        };
+        StudentImportResult: {
+            total: number;
+            valid: number;
+            created: number;
+            updated: number;
+            skipped: number;
+            columns: string[];
+            sample: components["schemas"]["StudentProfile"][];
+            issues: {
+                row: number;
+                message: string;
+            }[];
+            committed: boolean;
+        };
+        StudentProfile: {
+            /** @description 学号 */
+            studentNumber: string;
+            /** @description 姓名 */
+            name: string;
+            /** @description 性别 */
+            gender?: string;
+            /** @description 出生日期 */
+            birthDate?: string;
+            /** @description 证件号码 */
+            idNumber?: string;
+            /** @description 班级 */
+            className?: string;
+            /** @description 入学时间 */
+            admissionDate?: string;
+            /** @description 毕业时间 */
+            graduationDate?: string;
+            /** @description 肄业时间 */
+            withdrawalDate?: string;
+            /** @description 预计毕业时间 */
+            expectedGraduationDate?: string;
+            /** @description 就读年级 */
+            grade?: string;
+            /** @description 目前就读学年 */
+            academicYear?: string;
+            /** @description 放假开始时间 */
+            holidayStart?: string;
+            /** @description 放假结束时间 */
+            holidayEnd?: string;
+            /** @description 学校名称 */
+            schoolName?: string;
+            /** @description 民族 */
+            ethnicity?: string;
+            /** @description 院系 */
+            department?: string;
+            /** @description 专业 */
+            major?: string;
+            /** @description 学籍状态 */
+            status?: string;
+            idType?: string;
+        } & {
+            [key: string]: string;
+        };
+        StudentRecord: {
+            /** Format: uuid */
+            id: string;
+            revision: number;
+            profile: components["schemas"]["StudentProfile"];
+            createdAt: string;
+            updatedAt: string;
+        };
+        StudentRichDocument: {
+            /** @constant */
+            schemaVersion: "1.0";
+            /** @constant */
+            type: "doc";
+            content: components["schemas"]["StudentRichNode"][];
+        };
+        StudentRichMark: {
+            /** @enum {string} */
+            type: "bold" | "italic" | "underline" | "strike" | "textStyle";
+            attrs?: {
+                /** @enum {string} */
+                fontFamily?: "SimSun" | "SimHei" | "Microsoft YaHei" | "FangSong" | "KaiTi" | "Arial";
+                fontSize?: string;
+                color?: string;
+            };
+        };
+        StudentRichNode: {
+            /** @enum {string} */
+            type: "paragraph" | "heading" | "text" | "hardBreak" | "horizontalRule" | "bulletList" | "orderedList" | "listItem" | "templateField" | "table" | "tableRow" | "tableCell" | "tableHeader" | "image";
+            text?: string;
+            attrs?: {
+                /** @enum {string} */
+                textAlign?: "left" | "center" | "right" | "justify";
+                lineHeight?: string;
+                firstLineIndent?: number;
+                spaceBefore?: number;
+                spaceAfter?: number;
+                /** @enum {integer} */
+                level?: 1 | 2 | 3;
+                start?: number;
+                fieldKey?: string;
+                src?: string;
+                width?: number;
+                height?: number;
+                alt?: string;
+                title?: string;
+                colspan?: number;
+                rowspan?: number;
+                colwidth?: number[];
+            };
+            marks?: components["schemas"]["StudentRichMark"][];
+            content?: components["schemas"]["StudentRichNode"][];
+        };
+        StudentSave: {
+            /** Format: uuid */
+            id?: string;
+            revision?: number;
+            profile: components["schemas"]["StudentProfile"];
+        };
+        StudentSearch: {
+            keyword?: string;
+            studentNumber?: string;
+            name?: string;
+            className?: string;
+            status?: string;
+            page?: number;
+            pageSize?: number;
+        };
+        StudentSearchResult: {
+            items: components["schemas"]["StudentRecord"][];
+            total: number;
+            page: number;
+            pageSize: number;
+            classes: string[];
+        };
+        StudentTemplate: {
+            /** Format: uuid */
+            id: string;
+            kind: components["schemas"]["StudentTemplateKind"];
+            name: string;
+            /** @enum {string} */
+            format: "text" | "docx";
+            body: string;
+            requiredFields: string[];
+            version: number;
+            originalFileName: string;
+            createdAt: string;
+            document?: components["schemas"]["StudentRichDocument"] | null;
+        };
+        StudentTemplateDelete: {
+            /** Format: uuid */
+            id: string;
+        };
+        StudentTemplateDeleteResult: {
+            /** @constant */
+            deleted: true;
+        };
+        StudentTemplateExport: {
+            name: string;
+            document: components["schemas"]["StudentRichDocument"];
+        };
+        StudentTemplateImport: {
+            fileName: string;
+            contentBase64: string;
+        };
+        StudentTemplateImportResult: {
+            document: components["schemas"]["StudentRichDocument"];
+            body: string;
+            suggestedName: string;
+            notes: string[];
+        };
+        StudentTemplateKind: string;
+        StudentTemplateSave: {
+            kind: components["schemas"]["StudentTemplateKind"];
+            name: string;
+            body: string;
+            /** Format: uuid */
+            expectedId?: string;
+            document?: components["schemas"]["StudentRichDocument"];
+        };
+        StudentTemplateUpload: {
+            kind: components["schemas"]["StudentTemplateKind"];
+            name: string;
+            fileName: string;
+            contentBase64: string;
+            /** Format: uuid */
+            expectedId?: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export type operations = Record<string, never>;

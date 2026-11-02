@@ -1,0 +1,112 @@
+.registration-policy {
+  padding: 18px 20px;
+  border: 1px solid #dfe5ef;
+  border-radius: 10px;
+  background: #f8fafc;
+  margin-bottom: 26px;
+}
+.registration-policy > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.registration-policy h3,
+.registration-invitations-heading {
+  margin: 0;
+  color: #1d2939;
+  font-size: 15px;
+  font-weight: 600;
+}
+.registration-policy > header > span {
+  font-size: 12px;
+  color: #3f6552;
+}
+.registration-policy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.registration-policy-row strong {
+  color: #263449;
+  font-size: 14px;
+  font-weight: 550;
+}
+.registration-policy-row p {
+  color: #526074;
+  font-size: 13px;
+  margin: 7px 0 0;
+  line-height: 1.7;
+}
+.registration-policy-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 42px;
+  height: 24px;
+  padding: 3px;
+  border: 1px solid #bdc7d6;
+  border-radius: 20px;
+  background: #c5cdda;
+  transition:
+    background-color 140ms,
+    border-color 140ms;
+}
+.registration-policy-switch > span {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px #172d5225;
+  transition: transform 140ms;
+}
+.registration-policy-switch[aria-checked='true'] {
+  background: #3e5bd3;
+  border-color: #3e5bd3;
+}
+.registration-policy-switch[aria-checked='true'] > span {
+  transform: translateX(18px);
+}
+.registration-policy-switch:focus-visible {
+  outline: 2px solid #6078c8;
+  outline-offset: 4px;
+}
+.registration-policy-note,
+.registration-policy-loading {
+  color: #526074;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 15px 0 0;
+}
+.registration-invitations-heading {
+  margin-bottom: 16px;
+}
+.account-registration-route {
+  display: block;
+  width: fit-content;
+  margin: 15px auto 0;
+  padding: 3px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: #3452c4;
+}
+.account-form select {
+  height: 48px;
+  padding: 0 13px;
+  border: 1px solid #cdd6e3;
+  border-radius: 8px;
+  background: #fbfcff;
+  color: #1d2939;
+  font: inherit;
+  font-size: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .registration-policy-switch,
+  .registration-policy-switch > span {
+    transition: none;
+  }
+}

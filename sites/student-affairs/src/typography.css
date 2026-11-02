@@ -1,0 +1,431 @@
+/* Prefer native Chinese font hinting and legible UI text at normal browser zoom. */
+:root {
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+  -webkit-font-smoothing: auto;
+  font-synthesis: weight;
+  font-size: 15px;
+  color: #1f2d40;
+  --ink: #1f2d40;
+  --muted: #566579;
+}
+@media screen {
+  input,
+  select,
+  textarea {
+    color: #26354a;
+    font-weight: 400;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #727f91;
+    opacity: 1;
+  }
+  label {
+    color: #344257;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .btn {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .btn:disabled {
+    opacity: 1;
+    color: #77859a;
+    background: #f4f6fa;
+    border-color: #e0e5ed;
+    box-shadow: none;
+  }
+  .btn.primary:disabled {
+    background: #829bdc;
+    border-color: #829bdc;
+    color: #fff;
+  }
+  .btn.text:disabled {
+    background: transparent;
+    border-color: transparent;
+  }
+  .heading-eyebrow,
+  .sidebar-label {
+    font-size: 12px;
+    color: #66758a;
+    letter-spacing: 1px;
+  }
+  .brand small {
+    font-size: 12px;
+    color: #617086;
+    font-weight: 400;
+    letter-spacing: 2px;
+  }
+  .brand > span:last-child {
+    font-weight: 700;
+  }
+  .topbar {
+    font-size: 13px;
+    color: #59697e;
+  }
+  .topbar strong {
+    color: #33425a;
+    font-weight: 600;
+  }
+  .internal-badge {
+    font-size: 12px;
+    color: #53657b;
+  }
+  .count-badge {
+    font-size: 13px;
+    color: #4b638b;
+  }
+  .page-heading h1,
+  .modal > header h2 {
+    font-weight: 700;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: #5a687c;
+  }
+  .stat-value {
+    font-weight: 700;
+  }
+  .stat-value small {
+    font-size: 13px;
+    color: #66758a;
+  }
+  .panel-top h2,
+  .issue-block h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #26364c;
+  }
+  .panel-top > div > span,
+  .panel-filters select {
+    font-size: 13px;
+    color: #5e6d82;
+  }
+  .search-control input {
+    font-size: 14px;
+  }
+  table {
+    font-size: 14px;
+  }
+  th {
+    font-size: 13px;
+    font-weight: 600;
+    color: #526176;
+  }
+  td {
+    color: #334158;
+  }
+  td strong,
+  .student-name strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #25354c;
+  }
+  td small,
+  .student-name small {
+    font-size: 12px;
+    color: #65748a;
+  }
+  .mono {
+    font-size: 13px;
+  }
+  .muted {
+    color: #657389 !important;
+    font-size: 13px;
+  }
+  .row-actions button,
+  .text-button {
+    font-size: 13px;
+    font-weight: 500;
+    color: #365caa;
+  }
+  .status {
+    font-size: 12px;
+  }
+  .status.neutral {
+    color: #64748b;
+  }
+  .pager {
+    font-size: 13px;
+    color: #64748b;
+  }
+  .pager .btn {
+    font-size: 12px;
+  }
+  .page-footnote,
+  .empty p,
+  .empty .btn {
+    font-size: 13px;
+    color: #65748a;
+  }
+  .empty h3 {
+    font-size: 16px;
+    color: #33465f;
+    font-weight: 600;
+  }
+  .modal > header p,
+  .error-box {
+    font-size: 13px;
+  }
+  .modal > header p {
+    color: #66758a;
+  }
+  .form-section h3 {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .footer-left {
+    font-size: 12px;
+  }
+  .student-lookup label,
+  .certificate-field-form label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #344257;
+  }
+  .student-lookup input,
+  .certificate-field-form input {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .selected-student-header strong {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .selected-student-header small,
+  .selected-student-details {
+    font-size: 13px;
+    color: #52647d;
+  }
+  .selected-student > p,
+  .selected-student > p > span {
+    font-size: 12px;
+    color: #65758b;
+  }
+  .selected-student-header .btn {
+    font-size: 12px;
+  }
+  .certificate-options button {
+    font-size: 13px;
+    font-weight: 500;
+    color: #43566f;
+  }
+  .certificate-options button.selected {
+    font-weight: 600;
+    color: #3158bb;
+  }
+  .manual-tag {
+    font-size: 11px;
+    color: #906822;
+  }
+  .no-student-caption {
+    font-size: 13px;
+    color: #66768c;
+  }
+  .issue-form-hint {
+    font-size: 12px;
+    color: #65758b;
+  }
+  .issue-bottom .btn {
+    font-size: 14px;
+  }
+  .preview-panel > header strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3b4e69;
+  }
+  .preview-panel > header select,
+  .preview-panel > footer {
+    font-size: 12px;
+    color: #65758b;
+  }
+  .preview-format {
+    font-size: 11px;
+    color: #65758b;
+  }
+  .preview-panel > footer {
+    height: auto;
+    min-height: 39px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    flex-wrap: wrap;
+  }
+  .segmented button {
+    font-size: 13px;
+    color: #5b6d86;
+  }
+  .segmented button.active {
+    font-weight: 600;
+    color: #365588;
+  }
+  .template-heading h2,
+  .template-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .template-heading p,
+  .template-count {
+    font-size: 13px;
+    color: #61738b;
+  }
+  .template-card-content > p,
+  .template-card-bottom > span,
+  .template-card-bottom .btn {
+    font-size: 12px;
+    color: #60728c;
+  }
+  .template-body-label textarea {
+    font-size: 14px;
+    color: #344257;
+  }
+  .template-field-list h3,
+  .settings-tabs button {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .template-field-list p,
+  .template-field-list button,
+  .template-field-list small {
+    font-size: 12px;
+    color: #5f7391;
+  }
+  .settings-form-title p,
+  .members-heading p {
+    font-size: 13px;
+    color: #65758b;
+  }
+  .settings-form-title h3,
+  .settings-form h3,
+  .members-heading h3 {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .members-list strong {
+    font-size: 14px;
+  }
+  .members-list small,
+  .member-role,
+  .role-description {
+    font-size: 12px;
+  }
+  .members-list small,
+  .role-description {
+    color: #65758b;
+  }
+  .members-list .btn {
+    font-size: 13px;
+  }
+  .profile-account small {
+    font-size: 13px;
+    color: #65758b;
+  }
+  .upload-zone > span:last-child,
+  .import-help,
+  .checkbox-row {
+    font-size: 13px;
+    color: #60718a;
+  }
+  .import-help .btn,
+  .import-issues,
+  .import-summary,
+  .supported-fields {
+    font-size: 13px;
+  }
+  .import-summary {
+    color: #5e708a;
+  }
+  .import-preview td,
+  .import-preview th {
+    font-size: 13px;
+  }
+  .login-form-wrap label,
+  .login-form-wrap label input,
+  .login-form-wrap .btn.primary {
+    font-size: 14px;
+  }
+  .form-caption,
+  .login-account-note {
+    font-size: 13px;
+    color: #617188;
+  }
+  .login-art-caption p {
+    font-size: 13px;
+    color: #7186a5;
+  }
+  .login-page > header > strong {
+    font-size: 15px;
+  }
+  .login-form-wrap h2 {
+    font-weight: 700;
+  }
+  .toast {
+    font-size: 13px;
+  }
+  .loading {
+    font-size: 13px;
+    color: #60718a;
+  }
+}
+@media screen and (min-width: 801px) {
+  .sidebar nav button {
+    font-size: 15px;
+    font-weight: 600;
+    color: #344257;
+  }
+  .sidebar nav button.active {
+    color: #2d56c6;
+  }
+  .sidebar-bottom > button {
+    font-size: 13px;
+    color: #526278;
+  }
+  .sidebar-bottom .logout {
+    font-size: 13px;
+  }
+  .account strong {
+    font-size: 14px;
+    color: #293c57;
+    font-weight: 600;
+  }
+  .account small {
+    font-size: 12px;
+    color: #65748b;
+  }
+  .panel-filters .search-control {
+    min-width: 180px;
+  }
+}
+@media screen and (max-width: 1190px) {
+  .certificate-options {
+    grid-template-columns: 1fr;
+  }
+  .certificate-options button {
+    font-size: 14px;
+    padding: 12px;
+  }
+  .certificate-field-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .certificate-field-form .span-2 {
+    grid-column: span 1;
+  }
+}
+@media screen and (max-width: 800px) {
+  .certificate-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .certificate-options button {
+    font-size: 13px;
+    padding: 12px 9px;
+  }
+  .certificate-field-form .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .certificate-field-form .span-2 {
+    grid-column: span 2;
+  }
+  .segmented button {
+    font-size: 13px;
+  }
+}
