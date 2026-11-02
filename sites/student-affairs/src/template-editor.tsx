@@ -3,14 +3,18 @@ import type { Editor } from '@tiptap/react';
 import { api, downloadBase64, errorText, fields, fileBase64, type Template } from './data';
 import { Button, ErrorBox, Icon, Modal } from './components';
 import { DocumentEditor, editorDocument } from './document-editor';
+import { certificatePreset, certificatePresets } from '../shared/certificate-presets';
+import { englishSection, newBilingualDocument } from './bilingual-document';
 export function TemplateEditor({
   template,
   onClose,
   onSaved,
+  bilingualDraft = false,
 }: {
   template: Template;
   onClose: () => void;
   onSaved: () => void;
+  bilingualDraft?: boolean;
 }) {
   const [name, setName] = useState(template.name),
     [busy, setBusy] = useState(false),
@@ -19,6 +23,8 @@ export function TemplateEditor({
     [editor, setEditor] = useState<Editor | null>(null),
     [loaded, setLoaded] = useState<Template>(template),
     [importInfo, setImportInfo] = useState(''),
+    [fieldLanguage, setFieldLanguage] = useState<'zh' | 'en'>('zh'),
+    [englishKind, setEnglishKind] = useState<string>(certificatePreset(template.kind).kind),
     upload = useRef<HTMLInputElement>(null);
   async function save() {
     if (!editor) return;
@@ -102,6 +108,20 @@ export function TemplateEditor({
       .insertContent({ type: 'templateField', attrs: { fieldKey }, marks })
       .run();
   }
+  function insertEnglish() {
+    if (!editor) return;
+    if (bilingualDraft) {
+      editor.commands.setContent(newBilingualDocument(englishKind));
+      setName(certificatePreset(englishKind).name + '（中英双语）');
+    } else {
+      editor
+        .chain()
+        .focus()
+        .insertContentAt(editor.state.doc.content.size, englishSection(englishKind))
+        .run();
+    }
+    setFieldLanguage('en');
+  }
   return (
     <Modal
       title={template.id ? '编辑 ' + template.name : '新建证明模板'}
@@ -157,28 +177,73 @@ export function TemplateEditor({
           证明名称
           <input value={name} onChange={(e) => setName(e.target.value)} disabled={busy} />
         </label>
-        <span>字体与段落格式随模板保存</span>
+        {mode === 'text' && (
+          <div className="bilingual-template-actions">
+            <select
+              aria-label="双语证明类型"
+              disabled={busy}
+              value={englishKind}
+              onChange={(e) => setEnglishKind(e.target.value)}
+            >
+              {certificatePresets.map((preset) => (
+                <option key={preset.kind} value={preset.kind}>
+                  {preset.name}
+                </option>
+              ))}
+            </select>
+            <Button disabled={busy || !editor} onClick={insertEnglish}>
+              {bilingualDraft ? '套用双语版式' : '追加英文部分'}
+            </Button>
+          </div>
+        )}
       </div>
       {mode === 'text' ? (
         <div className="template-document-layout">
           <DocumentEditor template={loaded} disabled={busy} onReady={setEditor} />
           <aside className="document-fields">
             <h3>填充字段</h3>
-            <p>选中文字可替换为字段</p>
-            <div>
-              {Object.entries(fields).map(([key, label]) => (
-                <button
-                  type="button"
-                  key={key}
-                  disabled={busy || !editor}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => insert(key)}
-                >
-                  {label}
-                </button>
-              ))}
+            <div className="field-language-switch" role="group" aria-label="字段语言">
+              <button
+                type="button"
+                className={fieldLanguage === 'zh' ? 'active' : ''}
+                onClick={() => setFieldLanguage('zh')}
+              >
+                中文
+              </button>
+              <button
+                type="button"
+                className={fieldLanguage === 'en' ? 'active' : ''}
+                onClick={() => setFieldLanguage('en')}
+              >
+                英文
+              </button>
             </div>
-            <small>开具时自动填入学生资料和本次填写的信息。</small>
+            <p>选中文字可替换为字段</p>
+            <div className="template-field-buttons">
+              {Object.entries(fields)
+                .filter(([key]) =>
+                  fieldLanguage === 'zh'
+                    ? !key.endsWith('En')
+                    : key.endsWith('En') ||
+                      ['studentNumber', 'idNumber', 'certificateNumber'].includes(key),
+                )
+                .map(([key, label]) => (
+                  <button
+                    type="button"
+                    key={key}
+                    disabled={busy || !editor}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insert(key)}
+                  >
+                    {label}
+                  </button>
+                ))}
+            </div>
+            <small>
+              {fieldLanguage === 'en'
+                ? '英文姓名、学校名称等可在学生资料或开具时填写；日期按所选格式生成。'
+                : '开具时自动填入学生资料和本次填写的信息。'}
+            </small>
           </aside>
         </div>
       ) : (

@@ -4,18 +4,19 @@ import Docxtemplater from 'docxtemplater';
 import type { components } from '../shared/contracts.js';
 import { Fault } from './errors.js';
 import { dateFields, fields, formatDate, validDate } from './definitions.js';
+import { fieldKeyForLabel, profileFields } from '../shared/student-model.js';
+import { renderBilingualDocx } from './word-render.js';
 type S = components['schemas'];
 export function bytes(base64: string) {
   if (!base64 || base64.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(base64))
     throw new Fault(400, 'STUDENT_FILE_INVALID', '文件内容不完整，请重新选择文件。');
   return Buffer.from(base64, 'base64');
 }
-const labelToKey = new Map(Object.entries(fields).map(([key, label]) => [label, key]));
 export function requiredFields(body: string) {
   const keys = new Set<string>();
   for (const m of body.matchAll(/\{\{([^{}]+)\}\}/g)) {
     const label = m[1]!.trim(),
-      key = labelToKey.get(label);
+      key = fieldKeyForLabel(label);
     if (!key)
       throw new Fault(422, 'TEMPLATE_FIELD_UNKNOWN', '模板中有未识别的字段。', [
         { field: label, reason: '使用编辑器中列出的字段，例如 {{姓名}}、{{学号}}。' },
@@ -63,15 +64,26 @@ export function inspectDocx(content: Buffer) {
   const keys = requiredFields(body);
   const tags = body.match(/\{\{[^{}]*\}\}/g) ?? [];
   for (const tag of tags)
-    if (!labelToKey.has(tag.slice(2, -2).trim()))
+    if (!fieldKeyForLabel(tag.slice(2, -2)))
       throw new Fault(422, 'TEMPLATE_FIELD_UNKNOWN', 'Word 模板仅支持字段占位符。');
   return { body, keys };
 }
 export function renderDocx(content: Buffer, data: Record<string, string>) {
+  try {
+    /** Bilingual templates: English paragraphs receive English values, Chinese paragraphs stay Chinese. */
+    return renderBilingualDocx(content, data);
+  } catch {
+    /* Fall back to the plain substitution below so a rendering problem never blocks issuance. */
+  }
   const doc = docx(content),
     values: Record<string, string> = Object.create(null) as Record<string, string>;
   for (const [key, label] of Object.entries(fields))
     values[label] = dateFields.has(key) ? formatDate(data[key] ?? '') : (data[key] ?? '');
+  for (const tag of doc.getFullText().matchAll(/\{\{([^{}]+)\}\}/g)) {
+    const label = tag[1]!.trim(),
+      key = fieldKeyForLabel(label);
+    if (key) values[label] = dateFields.has(key) ? formatDate(data[key] ?? '') : (data[key] ?? '');
+  }
   try {
     doc.render(values);
     return doc.getZip().generate({ type: 'nodebuffer', compression: 'DEFLATE' });
@@ -182,35 +194,12 @@ export async function parseStudents(input: S['StudentImport']): Promise<{
     );
   }
   const columns = rows.shift()?.map((v) => v.trim()) ?? [],
-    keys = columns.map(
-      (label) =>
-        labelToKey.get(label) ?? aliases[label] ?? (Object.hasOwn(fields, label) ? label : ''),
-    );
+    keys = columns.map((label) => fieldKeyForLabel(label) ?? aliases[label] ?? '');
   if (!keys.includes('studentNumber') || !keys.includes('name'))
     throw new Fault(422, 'STUDENT_IMPORT_COLUMNS', '表头需要包含“学号”和“姓名”两列。', [
       { field: 'file', reason: '下载页面中的导入表格，按表头填写后上传。' },
     ]);
-  const profileKeys = new Set([
-      'studentNumber',
-      'name',
-      'gender',
-      'birthDate',
-      'idNumber',
-      'className',
-      'admissionDate',
-      'graduationDate',
-      'withdrawalDate',
-      'expectedGraduationDate',
-      'grade',
-      'academicYear',
-      'holidayStart',
-      'holidayEnd',
-      'schoolName',
-      'ethnicity',
-      'department',
-      'major',
-      'status',
-    ]),
+  const profileKeys = new Set<string>([...profileFields, 'department', 'major']),
     profiles: S['StudentProfile'][] = [],
     issues: { row: number; message: string }[] = [],
     seen = new Set<string>();

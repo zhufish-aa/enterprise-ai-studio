@@ -22,6 +22,7 @@ import type { components } from '../shared/contracts.js';
 import { Fault } from './errors.js';
 import { fields } from './definitions.js';
 import { documentText } from './rich-document.js';
+import { fieldKeyForLabel } from '../shared/student-model.js';
 type S = components['schemas'];
 type Node = S['StudentRichNode'];
 type Mark = S['StudentRichMark'];
@@ -63,11 +64,10 @@ const fontMap: Record<string, NonNullable<Mark['attrs']>['fontFamily']> = {
   楷体: 'KaiTi',
   KaiTi: 'KaiTi',
   Arial: 'Arial',
-  Calibri: 'Arial',
-  'Times New Roman': 'SimSun',
+  Calibri: 'Calibri',
+  'Times New Roman': 'Times New Roman',
 };
 const enabled = (p: XmlElement | undefined) => !!p && !['0', 'false', 'off'].includes(attr(p));
-const fieldKeys = new Map(Object.entries(fields).map(([key, label]) => [label, key]));
 /** Word may split a placeholder across differently formatted runs. Keep surrounding runs intact. */
 function fieldNodes(nodes: Node[]): Node[] {
   const result: Node[] = [];
@@ -91,7 +91,7 @@ function fieldNodes(nodes: Node[]): Node[] {
     let cursor = 0;
     for (const match of text.matchAll(/\{\{\s*([^{}]+?)\s*\}\}/g)) {
       const label = match[1]!.trim(),
-        key = fieldKeys.get(label);
+        key = fieldKeyForLabel(label);
       if (!key) continue;
       const start = match.index,
         end = start + match[0].length,
@@ -179,7 +179,7 @@ export function importWord(
       ? xml(styles.asText()).getElementsByTagNameNS(W, 'docDefaults')[0]
       : undefined;
     const defaultRun = defaults?.getElementsByTagNameNS(W, 'rPr')[0];
-    const marks = (properties: XmlElement[]): Mark[] => {
+    const marks = (properties: XmlElement[], preferLatin: boolean): Mark[] => {
       const list: Mark[] = [],
         a: NonNullable<Mark['attrs']> = {};
       for (const p of properties) {
@@ -196,7 +196,9 @@ export function importWord(
           if (enabled(n) && attr(n) !== 'none') list.push({ type });
         }
         const f = direct(p, 'rFonts'),
-          family = attr(f, 'eastAsia') || attr(f, 'ascii') || attr(f, 'hAnsi');
+          family = preferLatin
+            ? attr(f, 'ascii') || attr(f, 'hAnsi') || attr(f, 'eastAsia')
+            : attr(f, 'eastAsia') || attr(f, 'ascii') || attr(f, 'hAnsi');
         if (family) a.fontFamily = fontMap[family] ?? 'SimSun';
         const size = Number(attr(direct(p, 'sz')));
         if (size > 0) a.fontSize = size / 2 + 'pt';
@@ -298,6 +300,15 @@ export function importWord(
         ];
       };
       const paragraph = (p: XmlElement): Node => {
+        const paragraphText = descendants(p, 't')
+            .map((node) => node.textContent ?? '')
+            .join(''),
+          plainText = paragraphText.replace(/\{\{[^{}]+\}\}/g, ''),
+          hasEnglishField = [...paragraphText.matchAll(/\{\{([^{}]+)\}\}/g)].some((match) =>
+            fieldKeyForLabel(match[1]!)?.endsWith('En'),
+          ),
+          preferLatin =
+            !/\p{Script=Han}/u.test(plainText) && (/[A-Za-z]/.test(plainText) || hasEnglishField);
         const pp = direct(p, 'pPr'),
           id = attr(direct(pp, 'pStyle')),
           pStyles = [...inherited(id, 'pPr'), ...(pp ? [pp] : [])],
@@ -312,7 +323,10 @@ export function importWord(
           if (el.namespaceURI === W && el.localName === 'r') {
             const rp = direct(el, 'rPr'),
               styleId = attr(direct(rp, 'rStyle')),
-              m = marks([...rStyles, ...inherited(styleId, 'rPr'), ...(rp ? [rp] : [])]);
+              m = marks(
+                [...rStyles, ...inherited(styleId, 'rPr'), ...(rp ? [rp] : [])],
+                preferLatin,
+              );
             for (const n of children(el)) {
               if (n.localName === 't' && n.namespaceURI === W) {
                 const text = n.textContent ?? '';

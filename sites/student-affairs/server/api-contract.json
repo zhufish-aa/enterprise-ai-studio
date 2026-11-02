@@ -20,10 +20,7 @@
             "minimum": 0
           }
         },
-        "required": [
-          "id",
-          "revision"
-        ]
+        "required": ["id", "revision"]
       },
       "StudentCenterBootstrap": {
         "type": "object",
@@ -52,11 +49,7 @@
                 "minimum": 0
               }
             },
-            "required": [
-              "students",
-              "certificates",
-              "todayCertificates"
-            ]
+            "required": ["students", "certificates", "todayCertificates"]
           },
           "templates": {
             "type": "array",
@@ -71,13 +64,7 @@
             }
           }
         },
-        "required": [
-          "settings",
-          "currentUser",
-          "counts",
-          "templates",
-          "recent"
-        ]
+        "required": ["settings", "currentUser", "counts", "templates", "recent"]
       },
       "StudentCenterEnable": {
         "type": "object",
@@ -102,11 +89,7 @@
             "maxLength": 128
           }
         },
-        "required": [
-          "departmentName",
-          "adminUsername",
-          "adminPassword"
-        ]
+        "required": ["departmentName", "adminUsername", "adminPassword"]
       },
       "StudentCenterLogin": {
         "type": "object",
@@ -123,10 +106,7 @@
             "maxLength": 128
           }
         },
-        "required": [
-          "username",
-          "password"
-        ]
+        "required": ["username", "password"]
       },
       "StudentCenterMember": {
         "type": "object",
@@ -144,18 +124,10 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "administrator",
-              "staff"
-            ]
+            "enum": ["administrator", "staff"]
           }
         },
-        "required": [
-          "userId",
-          "name",
-          "username",
-          "role"
-        ]
+        "required": ["userId", "name", "username", "role"]
       },
       "StudentCenterMemberSave": {
         "type": "object",
@@ -182,16 +154,10 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "administrator",
-              "staff",
-              "remove"
-            ]
+            "enum": ["administrator", "staff", "remove"]
           }
         },
-        "required": [
-          "role"
-        ]
+        "required": ["role"]
       },
       "StudentCenterMembers": {
         "type": "object",
@@ -204,9 +170,7 @@
             }
           }
         },
-        "required": [
-          "items"
-        ]
+        "required": ["items"]
       },
       "StudentCenterPassword": {
         "type": "object",
@@ -221,10 +185,7 @@
             "maxLength": 128
           }
         },
-        "required": [
-          "currentPassword",
-          "password"
-        ]
+        "required": ["currentPassword", "password"]
       },
       "StudentCenterRequest": {
         "oneOf": [
@@ -240,10 +201,7 @@
                 "$ref": "#/components/schemas/StudentTemplateDelete"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -260,10 +218,7 @@
                 "required": []
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -277,10 +232,7 @@
                 "$ref": "#/components/schemas/StudentSearch"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -294,10 +246,7 @@
                 "$ref": "#/components/schemas/StudentSave"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -311,10 +260,7 @@
                 "$ref": "#/components/schemas/StudentArchive"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -328,10 +274,7 @@
                 "$ref": "#/components/schemas/StudentImport"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -345,10 +288,7 @@
                 "$ref": "#/components/schemas/StudentTemplateSave"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -362,10 +302,7 @@
                 "$ref": "#/components/schemas/StudentTemplateUpload"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -384,15 +321,10 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -406,10 +338,7 @@
                 "$ref": "#/components/schemas/StudentCertificateCreate"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -423,10 +352,7 @@
                 "$ref": "#/components/schemas/StudentCertificateSearch"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -445,15 +371,10 @@
                     "format": "uuid"
                   }
                 },
-                "required": [
-                  "id"
-                ]
+                "required": ["id"]
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -467,10 +388,7 @@
                 "$ref": "#/components/schemas/StudentCenterSettingsSave"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -487,10 +405,7 @@
                 "required": []
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -504,10 +419,7 @@
                 "$ref": "#/components/schemas/StudentCenterMemberSave"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -524,10 +436,7 @@
                 "required": []
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -541,10 +450,7 @@
                 "$ref": "#/components/schemas/StudentCenterLogin"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -561,10 +467,7 @@
                 "required": []
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -578,10 +481,7 @@
                 "$ref": "#/components/schemas/StudentCenterPassword"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -595,10 +495,7 @@
                 "$ref": "#/components/schemas/StudentCertificateCreate"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -612,10 +509,7 @@
                 "$ref": "#/components/schemas/StudentTemplateImport"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           },
           {
             "type": "object",
@@ -629,10 +523,7 @@
                 "$ref": "#/components/schemas/StudentTemplateExport"
               }
             },
-            "required": [
-              "action",
-              "payload"
-            ]
+            "required": ["action", "payload"]
           }
         ]
       },
@@ -650,10 +541,7 @@
                 "$ref": "#/components/schemas/StudentTemplateDeleteResult"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -667,10 +555,7 @@
                 "$ref": "#/components/schemas/StudentCenterBootstrap"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -684,10 +569,7 @@
                 "$ref": "#/components/schemas/StudentSearchResult"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -701,10 +583,7 @@
                 "$ref": "#/components/schemas/StudentRecord"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -722,15 +601,10 @@
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "archived"
-                ]
+                "required": ["archived"]
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -744,10 +618,7 @@
                 "$ref": "#/components/schemas/StudentImportResult"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -761,10 +632,7 @@
                 "$ref": "#/components/schemas/StudentTemplate"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -778,10 +646,7 @@
                 "$ref": "#/components/schemas/StudentTemplate"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -802,16 +667,10 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "contentBase64",
-                  "fileName"
-                ]
+                "required": ["contentBase64", "fileName"]
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -825,10 +684,7 @@
                 "$ref": "#/components/schemas/StudentCertificate"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -842,10 +698,7 @@
                 "$ref": "#/components/schemas/StudentCertificateSearchResult"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -859,10 +712,7 @@
                 "$ref": "#/components/schemas/StudentCertificate"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -876,10 +726,7 @@
                 "$ref": "#/components/schemas/StudentCenterSettings"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -893,10 +740,7 @@
                 "$ref": "#/components/schemas/StudentCenterMembers"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -910,10 +754,7 @@
                 "$ref": "#/components/schemas/StudentCenterMembers"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -927,10 +768,7 @@
                 "$ref": "#/components/schemas/StudentCenterSession"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -944,10 +782,7 @@
                 "$ref": "#/components/schemas/StudentCenterSession"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -961,10 +796,7 @@
                 "$ref": "#/components/schemas/StudentCenterSession"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -982,15 +814,10 @@
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "changed"
-                ]
+                "required": ["changed"]
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -1004,10 +831,7 @@
                 "$ref": "#/components/schemas/StudentCertificatePreview"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -1021,10 +845,7 @@
                 "$ref": "#/components/schemas/StudentTemplateImportResult"
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           },
           {
             "type": "object",
@@ -1045,16 +866,10 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "fileName",
-                  "contentBase64"
-                ]
+                "required": ["fileName", "contentBase64"]
               }
             },
-            "required": [
-              "action",
-              "result"
-            ]
+            "required": ["action", "result"]
           }
         ]
       },
@@ -1076,10 +891,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "user",
-          "departmentName"
-        ]
+        "required": ["user", "departmentName"]
       },
       "StudentCenterSettings": {
         "type": "object",
@@ -1172,22 +984,13 @@
             }
           },
           "contentBase64": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "fileName": {
             "type": "string"
           }
         },
-        "required": [
-          "summary",
-          "template",
-          "fields",
-          "contentBase64",
-          "fileName"
-        ]
+        "required": ["summary", "template", "fields", "contentBase64", "fileName"]
       },
       "StudentCertificateCreate": {
         "type": "object",
@@ -1211,14 +1014,14 @@
               "type": "string",
               "maxLength": 1000
             }
+          },
+          "dateFormatEn": {
+            "type": "string",
+            "enum": ["DD/MM/YYYY", "D MMMM YYYY", "MMMM D, YYYY", "YYYY-MM-DD"],
+            "description": "英文字段的日期格式；省略时使用日/月/年"
           }
         },
-        "required": [
-          "studentId",
-          "templateId",
-          "issueDate",
-          "fields"
-        ]
+        "required": ["studentId", "templateId", "issueDate", "fields"]
       },
       "StudentCertificatePreview": {
         "type": "object",
@@ -1234,21 +1037,13 @@
             }
           },
           "contentBase64": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "fileName": {
             "type": "string"
           }
         },
-        "required": [
-          "template",
-          "fields",
-          "contentBase64",
-          "fileName"
-        ]
+        "required": ["template", "fields", "contentBase64", "fileName"]
       },
       "StudentCertificateSearch": {
         "type": "object",
@@ -1291,12 +1086,7 @@
             "minimum": 0
           }
         },
-        "required": [
-          "items",
-          "total",
-          "page",
-          "pageSize"
-        ]
+        "required": ["items", "total", "page", "pageSize"]
       },
       "StudentCertificateSummary": {
         "type": "object",
@@ -1356,20 +1146,13 @@
           },
           "mode": {
             "type": "string",
-            "enum": [
-              "preview",
-              "commit"
-            ]
+            "enum": ["preview", "commit"]
           },
           "updateExisting": {
             "type": "boolean"
           }
         },
-        "required": [
-          "fileName",
-          "contentBase64",
-          "mode"
-        ]
+        "required": ["fileName", "contentBase64", "mode"]
       },
       "StudentImportResult": {
         "type": "object",
@@ -1421,10 +1204,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "row",
-                "message"
-              ]
+              "required": ["row", "message"]
             }
           },
           "committed": {
@@ -1547,12 +1327,34 @@
           "idType": {
             "type": "string",
             "maxLength": 500
+          },
+          "nameEn": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "姓名（英文）"
+          },
+          "schoolNameEn": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "学校名称（英文）"
+          },
+          "classNameEn": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "班级（英文）"
+          },
+          "gradeEn": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "就读年级（英文）"
+          },
+          "ethnicityEn": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "民族（英文）"
           }
         },
-        "required": [
-          "studentNumber",
-          "name"
-        ]
+        "required": ["studentNumber", "name"]
       },
       "StudentRecord": {
         "type": "object",
@@ -1576,13 +1378,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "id",
-          "revision",
-          "profile",
-          "createdAt",
-          "updatedAt"
-        ]
+        "required": ["id", "revision", "profile", "createdAt", "updatedAt"]
       },
       "StudentRichDocument": {
         "type": "object",
@@ -1603,11 +1399,7 @@
             }
           }
         },
-        "required": [
-          "schemaVersion",
-          "type",
-          "content"
-        ]
+        "required": ["schemaVersion", "type", "content"]
       },
       "StudentRichMark": {
         "type": "object",
@@ -1615,13 +1407,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "bold",
-              "italic",
-              "underline",
-              "strike",
-              "textStyle"
-            ]
+            "enum": ["bold", "italic", "underline", "strike", "textStyle"]
           },
           "attrs": {
             "type": "object",
@@ -1635,7 +1421,9 @@
                   "Microsoft YaHei",
                   "FangSong",
                   "KaiTi",
-                  "Arial"
+                  "Arial",
+                  "Times New Roman",
+                  "Calibri"
                 ]
               },
               "fontSize": {
@@ -1650,9 +1438,7 @@
             "required": []
           }
         },
-        "required": [
-          "type"
-        ]
+        "required": ["type"]
       },
       "StudentRichNode": {
         "type": "object",
@@ -1686,12 +1472,7 @@
             "properties": {
               "textAlign": {
                 "type": "string",
-                "enum": [
-                  "left",
-                  "center",
-                  "right",
-                  "justify"
-                ]
+                "enum": ["left", "center", "right", "justify"]
               },
               "lineHeight": {
                 "type": "string",
@@ -1711,11 +1492,7 @@
               },
               "level": {
                 "type": "integer",
-                "enum": [
-                  1,
-                  2,
-                  3
-                ]
+                "enum": [1, 2, 3]
               },
               "start": {
                 "type": "integer",
@@ -1773,9 +1550,7 @@
             }
           }
         },
-        "required": [
-          "type"
-        ]
+        "required": ["type"]
       },
       "StudentSave": {
         "type": "object",
@@ -1793,9 +1568,7 @@
             "$ref": "#/components/schemas/StudentProfile"
           }
         },
-        "required": [
-          "profile"
-        ]
+        "required": ["profile"]
       },
       "StudentSearch": {
         "type": "object",
@@ -1856,13 +1629,7 @@
             }
           }
         },
-        "required": [
-          "items",
-          "total",
-          "page",
-          "pageSize",
-          "classes"
-        ]
+        "required": ["items", "total", "page", "pageSize", "classes"]
       },
       "StudentTemplate": {
         "type": "object",
@@ -1880,10 +1647,7 @@
           },
           "format": {
             "type": "string",
-            "enum": [
-              "text",
-              "docx"
-            ]
+            "enum": ["text", "docx"]
           },
           "body": {
             "type": "string"
@@ -1936,9 +1700,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "StudentTemplateDeleteResult": {
         "type": "object",
@@ -1949,9 +1711,7 @@
             "const": true
           }
         },
-        "required": [
-          "deleted"
-        ]
+        "required": ["deleted"]
       },
       "StudentTemplateExport": {
         "type": "object",
@@ -1964,10 +1724,7 @@
             "$ref": "#/components/schemas/StudentRichDocument"
           }
         },
-        "required": [
-          "name",
-          "document"
-        ]
+        "required": ["name", "document"]
       },
       "StudentTemplateImport": {
         "type": "object",
@@ -1980,10 +1737,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "fileName",
-          "contentBase64"
-        ]
+        "required": ["fileName", "contentBase64"]
       },
       "StudentTemplateImportResult": {
         "type": "object",
@@ -2005,12 +1759,7 @@
             }
           }
         },
-        "required": [
-          "document",
-          "body",
-          "suggestedName",
-          "notes"
-        ]
+        "required": ["document", "body", "suggestedName", "notes"]
       },
       "StudentTemplateKind": {
         "type": "string",
@@ -2037,11 +1786,7 @@
             "$ref": "#/components/schemas/StudentRichDocument"
           }
         },
-        "required": [
-          "kind",
-          "name",
-          "body"
-        ]
+        "required": ["kind", "name", "body"]
       },
       "StudentTemplateUpload": {
         "type": "object",
@@ -2064,12 +1809,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "kind",
-          "name",
-          "fileName",
-          "contentBase64"
-        ]
+        "required": ["kind", "name", "fileName", "contentBase64"]
       }
     }
   }

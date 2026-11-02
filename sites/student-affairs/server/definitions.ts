@@ -2,6 +2,7 @@ import type { components } from '../shared/contracts.js';
 type S = components['schemas'];
 import { fields, dateFields } from '../shared/student-model.js';
 export { fields, dateFields };
+import { formatChineseDate } from '../shared/certificate-values.js';
 export const defaultTemplates: Pick<S['StudentTemplate'], 'kind' | 'name' | 'body'>[] = [
   {
     kind: 'enrollment',
@@ -46,6 +47,5 @@ export function validDate(value: string) {
 }
 export function formatDate(value: string) {
   if (!validDate(value)) return value;
-  const [y, m, d] = value.split('-');
-  return `${y}年${Number(m)}月${Number(d)}日`;
+  return formatChineseDate(value);
 }

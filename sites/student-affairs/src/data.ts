@@ -1,4 +1,11 @@
 import { fields, dateFields, profileFields } from '../shared/student-model';
+import {
+  certificateValues,
+  formatChineseDate,
+  type EnglishDateFormat,
+} from '../shared/certificate-values';
+import { certificatePresets } from '../shared/certificate-presets';
+import { certificateEnglishDefaults } from '../shared/bilingual';
 export { fields, dateFields, profileFields };
 import type { components } from '../shared/contracts';
 import { RuntimeQueryError } from '@eas/platform-sdk/runtime';
@@ -29,9 +36,7 @@ export function today() {
   }).format(new Date());
 }
 export function date(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
-  const [y, m, d] = value.split('-');
-  return `${y}年${Number(m)}月${Number(d)}日`;
+  return formatChineseDate(value);
 }
 export function shortDate(v: string) {
   return new Date(v).toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' });
@@ -94,22 +99,23 @@ export function populated(
   settings: S['StudentCenterSettings'],
   extra: Record<string, string>,
   issueDate: string,
+  dateFormatEn: EnglishDateFormat = 'DD/MM/YYYY',
+  template?: Template,
 ) {
-  const p = student?.profile;
-  const data: Record<string, string> = {
-    ...p,
-    schoolName: p?.schoolName || settings.schoolName,
-    signature: settings.signature || settings.departmentName,
-    departmentName: settings.departmentName,
-    academicYear: p?.academicYear || settings.academicYear,
-    holidayStart: p?.holidayStart || settings.holidayStart,
-    holidayEnd: p?.holidayEnd || settings.holidayEnd,
-    ...extra,
-    issueDate,
-  };
-  data['holidayRange'] =
-    data['holidayStart'] && data['holidayEnd']
-      ? date(data['holidayStart']) + ' 至 ' + date(data['holidayEnd'])
-      : (data['holidayRange'] ?? '');
-  return data;
+  return certificateEnglishDefaults(
+    certificateValues(
+      student?.profile,
+      settings,
+      extra,
+      issueDate,
+      dateFormatEn,
+      template
+        ? {
+            name: template.name,
+            englishName:
+              certificatePresets.find((preset) => preset.kind === template.kind)?.englishName ?? '',
+          }
+        : undefined,
+    ),
+  );
 }

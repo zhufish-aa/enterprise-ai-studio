@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { renderAsync } from 'docx-preview';
 import { date, dateFields, fields, type Certificate, type Template } from './data';
+import { englishValue, isEnglishText } from '../shared/bilingual';
 import { RichPaper, FilledField } from './rich-document';
+import { fieldKeyForLabel } from '../shared/student-model';
 export function Paper({
   template,
   values,
@@ -43,13 +45,13 @@ export function Paper({
       current = false;
     };
   }, [contentBase64, onReady]);
-  const substitute = (s: string) =>
+  const substitute = (s: string, english: boolean) =>
     s.split(/(\{\{[^{}]+\}\})/g).map((part, i) => {
       if (!part.startsWith('{{')) return part;
       const label = part.slice(2, -2).trim(),
-        key = Object.entries(fields).find(([, v]) => v === label)?.[0] ?? '',
+        key = fieldKeyForLabel(label) ?? '',
         raw = values[key] ?? '',
-        value = dateFields.has(key) ? date(raw) : raw;
+        value = english ? englishValue(key, raw, values) : dateFields.has(key) ? date(raw) : raw;
       return value ? (
         <FilledField key={i} fieldKey={key} value={value} />
       ) : (
@@ -84,7 +86,7 @@ export function Paper({
             key={i}
             className={p.includes('{{落款}}') || p.includes('{{开具日期}}') ? 'paper-signoff' : ''}
           >
-            {substitute(p)}
+            {substitute(p, isEnglishText(p))}
           </p>
         ))}
       </div>

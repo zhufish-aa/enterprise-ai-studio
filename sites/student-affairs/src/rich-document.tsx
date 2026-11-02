@@ -1,5 +1,7 @@
 import { Fragment, type CSSProperties, type ReactNode } from 'react';
 import { date, dateFields, fields, type S, type Template } from './data';
+import { fieldKeyForLabel } from '../shared/student-model';
+import { englishValue, isEnglishText } from '../shared/bilingual';
 export type RichDocument = S['StudentRichDocument'];
 export type RichNode = S['StudentRichNode'];
 export type RichMark = S['StudentRichMark'];
@@ -10,8 +12,9 @@ export const fontChoices = [
   ['FangSong', '仿宋'],
   ['KaiTi', '楷体'],
   ['Arial', 'Arial'],
+  ['Times New Roman', 'Times New Roman'],
+  ['Calibri', 'Calibri'],
 ] as const;
-const fieldKeys = new Map(Object.entries(fields).map(([k, v]) => [v, k]));
 /** Recognize placeholders in documents saved before Word import created field nodes. */
 export function normalizeTemplateFields(document: RichDocument): RichDocument {
   const inline = (nodes: RichNode[]): RichNode[] => {
@@ -36,7 +39,7 @@ export function normalizeTemplateFields(document: RichDocument): RichDocument {
       let cursor = 0;
       for (const match of text.matchAll(/\{\{\s*([^{}]+?)\s*\}\}/g)) {
         const label = match[1]!.trim(),
-          key = fieldKeys.get(label);
+          key = fieldKeyForLabel(label);
         if (!key) continue;
         const start = match.index,
           styleAt = start + match[0].indexOf(label),
@@ -81,7 +84,7 @@ function textNodes(value: string, marks?: RichMark[]): RichNode[] {
     .map((part) => {
       if (part === '\n') return { type: 'hardBreak' };
       if (part.startsWith('{{')) {
-        const key = fieldKeys.get(part.slice(2, -2).trim());
+        const key = fieldKeyForLabel(part.slice(2, -2));
         if (key)
           return { type: 'templateField', attrs: { fieldKey: key }, ...(marks ? { marks } : {}) };
       }
@@ -177,14 +180,18 @@ function wrapMarks(content: ReactNode, marks: RichMark[] = []) {
     }
   }, content);
 }
-function inlineText(text: string, values: Record<string, string>) {
+function inlineText(text: string, values: Record<string, string>, english: boolean) {
   return text.split(/(\{\{[^{}]+\}\})/g).map((part, i) => {
     if (!part.startsWith('{{')) return part;
     const label = part.slice(2, -2).trim(),
-      key = fieldKeys.get(label) ?? '',
+      key = fieldKeyForLabel(label) ?? '',
       raw = values[key] ?? '';
     return raw ? (
-      <FilledField key={i} fieldKey={key} value={dateFields.has(key) ? date(raw) : raw} />
+      <FilledField
+        key={i}
+        fieldKey={key}
+        value={english ? englishValue(key, raw, values) : dateFields.has(key) ? date(raw) : raw}
+      />
     ) : (
       <span className="paper-placeholder" key={i}>
         {label}
@@ -192,18 +199,41 @@ function inlineText(text: string, values: Record<string, string>) {
     );
   });
 }
-function render(node: RichNode, values: Record<string, string>, key: number): ReactNode {
-  const children = node.content?.map((n, i) => render(n, values, i)),
+function blockText(node: RichNode): string {
+  if (node.type === 'text') return node.text ?? '';
+  if (node.type === 'templateField') return ' ';
+  if (node.type === 'hardBreak') return '\n';
+  return (node.content ?? []).map(blockText).join('');
+}
+function render(
+  node: RichNode,
+  values: Record<string, string>,
+  key: number,
+  english = false,
+): ReactNode {
+  const block =
+      node.type === 'paragraph' || node.type === 'heading'
+        ? isEnglishText(blockText(node))
+        : english,
+    children = node.content?.map((n, i) => render(n, values, i, block)),
     style = nodeStyle(node);
   switch (node.type) {
     case 'text':
       return (
-        <Fragment key={key}>{wrapMarks(inlineText(node.text ?? '', values), node.marks)}</Fragment>
+        <Fragment key={key}>
+          {wrapMarks(inlineText(node.text ?? '', values, block), node.marks)}
+        </Fragment>
       );
     case 'templateField': {
       const k = node.attrs?.fieldKey ?? '',
         raw = values[k] ?? '',
-        text = raw ? (dateFields.has(k) ? date(raw) : raw) : null;
+        text = raw
+          ? block
+            ? englishValue(k, raw, values)
+            : dateFields.has(k)
+              ? date(raw)
+              : raw
+          : null;
       return (
         <Fragment key={key}>
           {wrapMarks(

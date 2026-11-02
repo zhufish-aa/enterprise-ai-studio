@@ -26,6 +26,7 @@ import {
   Pager,
   Status,
 } from './components';
+import { schoolNames } from '../shared/schools';
 export function Students({
   data,
   onChanged,
@@ -216,7 +217,9 @@ export function Students({
                             <div>
                               <strong>{p.name}</strong>
                               <small>
-                                {[p.gender, p.ethnicity].filter(Boolean).join(' · ') || '学生档案'}
+                                {[p.schoolName?.replace(/^深圳中学/, ''), p.gender]
+                                  .filter(Boolean)
+                                  .join(' · ') || '学生档案'}
                               </small>
                             </div>
                           </div>
@@ -398,6 +401,10 @@ export function StudentEditor({
       ],
     },
     { title: '证明补充信息', keys: ['academicYear', 'holidayStart', 'holidayEnd'] },
+    {
+      title: '英文资料',
+      keys: ['nameEn', 'schoolNameEn', 'classNameEn', 'gradeEn', 'ethnicityEn'],
+    },
   ];
   return (
     <Modal
@@ -445,7 +452,11 @@ export function StudentEditor({
               {g.keys.map((key) => (
                 <label
                   key={key}
-                  className={key === 'idNumber' || key === 'schoolName' ? 'span-2' : ''}
+                  className={
+                    ['idNumber', 'schoolName', 'schoolNameEn', 'classNameEn'].includes(key)
+                      ? 'span-2'
+                      : ''
+                  }
                 >
                   {fields[key]}
                   {['studentNumber', 'name'].includes(key) && <em>*</em>}
@@ -676,7 +687,9 @@ function StudentField({
         ? ['男', '女', '未说明']
         : fieldKey === 'idType'
           ? idTypeOptions
-          : null;
+          : fieldKey === 'schoolName'
+            ? schoolNames
+            : null;
   if (choices)
     return (
       <select value={value} onChange={(e) => onChange(e.target.value)}>

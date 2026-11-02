@@ -29,6 +29,11 @@ import {
 } from './components';
 import { Paper, printCertificate } from './paper';
 import { Templates } from './templates';
+import {
+  englishDateFormats,
+  englishDateSources,
+  type EnglishDateFormat,
+} from '../shared/certificate-values';
 export function Certificates({
   data,
   onChanged,
@@ -115,6 +120,7 @@ function Issue({
     [kind, setKind] = useState(data.templates[0]?.kind ?? 'enrollment'),
     [extra, setExtra] = useState<Record<string, string>>({}),
     [issueDate, setIssueDate] = useState(today()),
+    [dateFormatEn, setDateFormatEn] = useState<EnglishDateFormat>('DD/MM/YYYY'),
     [certificate, setCertificate] = useState<Certificate | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -122,8 +128,12 @@ function Issue({
     [wordDraft, setWordDraft] = useState<S['StudentCertificatePreview'] | null>(null),
     [wordError, setWordError] = useState('');
   const t = data.templates.find((t) => t.kind === kind) ?? data.templates[0]!,
-    values = populated(student, data.settings, extra, issueDate),
+    values = populated(student, data.settings, extra, issueDate, dateFormatEn, t),
+    bilingual =
+      t.requiredFields.some((key) => key.endsWith('En')) ||
+      /\b[A-Za-z]{3,}\b/.test(t.body.replace(/\{\{[^{}]+\}\}/g, '')),
     formFields = t.requiredFields
+      .map((key) => englishDateSources[key] ?? key)
       .filter(
         (k) =>
           ![
@@ -134,11 +144,14 @@ function Issue({
             'schoolName',
           ].includes(k),
       )
-      .flatMap((k) => (k === 'holidayRange' ? ['holidayStart', 'holidayEnd'] : [k]));
+      .flatMap((k) =>
+        k === 'holidayRange' || k === 'holidayRangeEn' ? ['holidayStart', 'holidayEnd'] : [k],
+      );
   const wordKey = JSON.stringify({
     studentId: student?.id,
     templateId: t.id,
     issueDate,
+    dateFormatEn,
     extra,
     revision: data.settings.revision,
   });
@@ -150,7 +163,7 @@ function Issue({
       timer = setTimeout(() => {
         void api(
           'certificates.preview',
-          { studentId: student.id, templateId: t.id, issueDate, fields: extra },
+          { studentId: student.id, templateId: t.id, issueDate, dateFormatEn, fields: extra },
           a.signal,
         )
           .then(setWordDraft)
@@ -208,6 +221,7 @@ function Issue({
         studentId: student.id,
         templateId: t.id,
         issueDate,
+        dateFormatEn,
         fields: extra,
       });
       setCertificate(r);
@@ -252,6 +266,9 @@ function Issue({
                   </Button>
                 </div>
                 <div className="selected-student-details">
+                  <span>
+                    {student.profile.schoolName?.replace(/^深圳中学/, '') || '学校未填写'}
+                  </span>
                   <span>{student.profile.className || '班级未填写'}</span>
                   <Status value={student.profile.status ?? ''} />
                 </div>
@@ -343,7 +360,7 @@ function Issue({
                   disabled={!student}
                   required={t.requiredFields.includes('schoolName')}
                   onChange={(e) => change('schoolName', e.target.value)}
-                  placeholder="选择学生后自动填入，可为本次证明修改"
+                  placeholder="按学生所属学校自动填入（科技 / 数理 / 实验高中），可为本次证明修改"
                 />
               </label>
               <label>
@@ -357,6 +374,24 @@ function Issue({
                   }}
                 />
               </label>
+              {bilingual && (
+                <label>
+                  英文日期格式
+                  <select
+                    value={dateFormatEn}
+                    onChange={(e) => {
+                      setDateFormatEn(e.target.value as EnglishDateFormat);
+                      setCertificate(null);
+                    }}
+                  >
+                    {englishDateFormats.map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               {student ? (
                 <div className="form-grid">
                   {[...new Set(formFields)].map((key) => (
@@ -369,6 +404,11 @@ function Issue({
                           'travelRoute',
                           'signature',
                           'schoolName',
+                          'schoolNameEn',
+                          'classNameEn',
+                          'signatureEn',
+                          'homeAddressEn',
+                          'travelRouteEn',
                         ].includes(key)
                           ? 'span-2'
                           : ''

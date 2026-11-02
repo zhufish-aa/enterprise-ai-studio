@@ -1,6 +1,7 @@
 export const fields: Record<string, string> = {
   studentNumber: '学号',
   name: '姓名',
+  nameEn: '英文姓名',
   gender: '性别',
   birthDate: '出生日期',
   idNumber: '证件号码',
@@ -25,10 +26,31 @@ export const fields: Record<string, string> = {
   departmentName: '部门名称',
   certificateNumber: '证明编号',
   templateTitle: '证明名称',
+  genderEn: '性别（英文）',
+  birthDateEn: '出生日期（英文）',
+  idTypeEn: '证件类型（英文）',
+  classNameEn: '班级（英文）',
+  gradeEn: '就读年级（英文）',
+  academicYearEn: '目前就读学年（英文）',
+  admissionDateEn: '入学时间（英文）',
+  graduationDateEn: '毕业时间（英文）',
+  withdrawalDateEn: '肄业时间（英文）',
+  expectedGraduationDateEn: '预计毕业时间（英文）',
+  holidayStartEn: '放假开始时间（英文）',
+  holidayEndEn: '放假结束时间（英文）',
+  holidayRangeEn: '放假起止时间（英文）',
+  schoolNameEn: '学校名称（英文）',
+  ethnicityEn: '民族（英文）',
+  issueDateEn: '开具日期（英文）',
+  homeAddressEn: '家庭详细地址（英文）',
+  travelRouteEn: '火车票优惠乘车区间（英文）',
+  signatureEn: '落款（英文）',
+  templateTitleEn: '证明名称（英文）',
 };
 export const profileFields = [
   'studentNumber',
   'name',
+  'nameEn',
   'gender',
   'birthDate',
   'idNumber',
@@ -45,6 +67,10 @@ export const profileFields = [
   'academicYear',
   'holidayStart',
   'holidayEnd',
+  'schoolNameEn',
+  'classNameEn',
+  'gradeEn',
+  'ethnicityEn',
 ] as const;
 export const dateFields = new Set([
   'birthDate',
@@ -56,3 +82,46 @@ export const dateFields = new Set([
   'holidayEnd',
   'issueDate',
 ]);
+
+const aliases: Record<string, string> = {
+  '姓名（英文）': 'nameEn',
+  'English Name': 'nameEn',
+  Name: 'nameEn',
+  Gender: 'genderEn',
+  'Date of Birth': 'birthDateEn',
+  'Birth Date': 'birthDateEn',
+  'ID Type': 'idTypeEn',
+  'ID Number': 'idNumber',
+  'Student Number': 'studentNumber',
+  Class: 'classNameEn',
+  Grade: 'gradeEn',
+  'School Name': 'schoolNameEn',
+  'Academic Year': 'academicYearEn',
+  'Admission Date': 'admissionDateEn',
+  'Graduation Date': 'graduationDateEn',
+  'Expected Graduation Date': 'expectedGraduationDateEn',
+  'Withdrawal Date': 'withdrawalDateEn',
+  'Holiday Start': 'holidayStartEn',
+  'Holiday End': 'holidayEndEn',
+  'Holiday Period': 'holidayRangeEn',
+  Ethnicity: 'ethnicityEn',
+  'Issue Date': 'issueDateEn',
+  'Home Address': 'homeAddressEn',
+  'Travel Route': 'travelRouteEn',
+  Signature: 'signatureEn',
+  'Certificate Title': 'templateTitleEn',
+  'Certificate Number': 'certificateNumber',
+};
+const fieldNames = new Map(
+  [
+    ...Object.entries(fields).flatMap(([key, label]) => [
+      [key, key],
+      [label, key],
+    ]),
+    ...Object.entries(aliases),
+  ].map(([name, key]) => [name!.toLowerCase(), key!]),
+);
+export function fieldKeyForLabel(label: string) {
+  if (Object.hasOwn(fields, label.trim())) return label.trim();
+  return fieldNames.get(label.trim().toLowerCase());
+}

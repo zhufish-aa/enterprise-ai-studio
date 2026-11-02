@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { api, downloadBase64, errorText, requestId, shortDate, type Template } from './data';
 import { Button, Empty, ErrorBox, Modal } from './components';
 import { TemplateEditor } from './template-editor';
+import { newBilingualDocument } from './bilingual-document';
 
 export function Templates({
   templates,
@@ -16,6 +17,7 @@ export function Templates({
     [downloading, setDownloading] = useState<string | null>(null),
     [deleting, setDeleting] = useState<Template | null>(null),
     [removing, setRemoving] = useState(false),
+    [bilingualDraft, setBilingualDraft] = useState(false),
     [error, setError] = useState('');
   async function download(t: Template) {
     setDownloading(t.id);
@@ -43,18 +45,21 @@ export function Templates({
       setRemoving(false);
     }
   }
-  const fresh = () =>
+  const fresh = (bilingual = false) => {
+    setBilingualDraft(bilingual);
     setEditing({
       id: '',
       kind: 'custom_' + requestId().replaceAll('-', ''),
-      name: '',
+      name: bilingual ? '在校证明（中英双语）' : '',
       body: '兹证明，{{姓名}}（学号：{{学号}}）为我校学生。\n\n特此证明。\n\n{{落款}}\n{{开具日期}}',
       format: 'text',
       requiredFields: ['name', 'studentNumber', 'signature', 'issueDate'],
       version: 0,
       originalFileName: '',
       createdAt: new Date().toISOString(),
+      ...(bilingual ? { document: newBilingualDocument() } : {}),
     });
+  };
   return (
     <>
       <section className="template-heading">
@@ -64,7 +69,8 @@ export function Templates({
         </div>
         <div className="heading-actions">
           <span className="template-count">{templates.length} 类模板</span>
-          <Button icon="plus" variant="primary" onClick={fresh}>
+          <Button onClick={() => fresh(true)}>新建双语模板</Button>
+          <Button icon="plus" variant="primary" onClick={() => fresh()}>
             新建模板
           </Button>
         </div>
@@ -107,7 +113,14 @@ export function Templates({
                     >
                       下载
                     </Button>
-                    <Button variant="text" icon="edit" onClick={() => setEditing(t)}>
+                    <Button
+                      variant="text"
+                      icon="edit"
+                      onClick={() => {
+                        setBilingualDraft(false);
+                        setEditing(t);
+                      }}
+                    >
                       编辑
                     </Button>
                     <Button
@@ -130,7 +143,7 @@ export function Templates({
         </div>
       ) : (
         <Empty title="还没有证明模板" icon="certificate">
-          <Button icon="plus" variant="primary" onClick={fresh}>
+          <Button icon="plus" variant="primary" onClick={() => fresh()}>
             新建模板
           </Button>
         </Empty>
@@ -138,6 +151,7 @@ export function Templates({
       {editing && (
         <TemplateEditor
           template={editing}
+          bilingualDraft={bilingualDraft}
           onClose={() => setEditing(null)}
           onSaved={() => {
             setEditing(null);

@@ -3,10 +3,14 @@ import type { components } from '../shared/contracts.js';
 import type { Sql } from './database.js';
 import { Fault } from './errors.js';
 import { studentPasswordHash, type StudentActor } from './accounts.js';
-import { dateFields, defaultTemplates, fields, formatDate, validDate } from './definitions.js';
+import { dateFields, defaultTemplates, fields, validDate } from './definitions.js';
 import { bytes, inspectDocx, parseStudents, renderDocx, requiredFields } from './files.js';
+import { englishName } from './pinyin.js';
 import { documentText } from './rich-document.js';
 import { importWord, exportWord, legacyDocument } from './word-documents.js';
+import { certificateValues } from '../shared/certificate-values.js';
+import { certificatePresets } from '../shared/certificate-presets.js';
+import { certificateEnglishDefaults } from '../shared/bilingual.js';
 type S = components['schemas'];
 
 interface SettingsRow {
@@ -48,9 +52,11 @@ interface CertRow {
   created_by_name: string;
   template_name: string;
 }
+const withEnglishName = (profile: S['StudentProfile']): S['StudentProfile'] =>
+  profile.nameEn || !profile.name ? profile : { ...profile, nameEn: englishName(profile.name) };
 const studentDto = (r: StudentRow): S['StudentRecord'] => ({
   id: r.id,
-  profile: r.profile,
+  profile: withEnglishName(r.profile),
   revision: Number(r.revision),
   createdAt: r.created_at.toISOString(),
   updatedAt: r.updated_at.toISOString(),
@@ -180,6 +186,7 @@ export class StudentCenterService {
     }
     if (!copy.studentNumber || !copy.name)
       throw new Fault(422, 'STUDENT_FIELD_INVALID', '学号和姓名不能为空。');
+    if (!copy.nameEn) copy.nameEn = englishName(copy.name);
     return copy;
   }
   async search(tx: Sql, s: StudentActor, appId: string, b: S['StudentSearch']) {
@@ -433,15 +440,7 @@ export class StudentCenterService {
       t = await this.template(tx, s, appId, b.templateId),
       settings = await this.settings(tx, s, appId);
     await this.templateActive(tx, s, appId, t.kind);
-    const data: Record<string, string> = {
-      ...student.profile,
-      schoolName: student.profile.schoolName || settings.schoolName,
-      signature: settings.signature || settings.departmentName,
-      departmentName: settings.departmentName,
-      academicYear: student.profile.academicYear || settings.academicYear,
-      holidayStart: student.profile.holidayStart || settings.holidayStart,
-      holidayEnd: student.profile.holidayEnd || settings.holidayEnd,
-    };
+    const overrides: Record<string, string> = {};
     for (const [key, value] of Object.entries(b.fields)) {
       if (!Object.hasOwn(fields, key) || ['issueDate', 'certificateNumber'].includes(key))
         throw new Fault(422, 'STUDENT_FIELD_INVALID', '包含未支持的证明字段。', [
@@ -449,14 +448,22 @@ export class StudentCenterService {
         ]);
       if (dateFields.has(key) && value && !validDate(value))
         throw new Fault(422, 'STUDENT_FIELD_INVALID', fields[key] + '请填写有效日期。');
-      data[key] = value.trim();
+      overrides[key] = value.trim();
     }
-    data['issueDate'] = b.issueDate;
-    data['templateTitle'] = t.name;
-    data['holidayRange'] =
-      data['holidayStart'] && data['holidayEnd']
-        ? formatDate(data['holidayStart']) + ' 至 ' + formatDate(data['holidayEnd'])
-        : (data['holidayRange'] ?? '');
+    const data = certificateEnglishDefaults(
+      certificateValues(
+        withEnglishName(student.profile),
+        settings,
+        overrides,
+        b.issueDate,
+        b.dateFormatEn,
+        {
+          name: t.name,
+          englishName:
+            certificatePresets.find((preset) => preset.kind === t.kind)?.englishName ?? '',
+        },
+      ),
+    );
     if (preview)
       return {
         template: templateDto(t),
