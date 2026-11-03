@@ -187,7 +187,20 @@ export function createStudioRuntime(
                 const s = await identity.subject(tx, actor, org);
                 identity.require(s, op['x-permissions']?.[0] ?? 'session.read');
                 await authorize(tx, s);
-                return fn({ tx, s, p, body: req.body, trace });
+                const result = await fn({ tx, s, p, body: req.body, trace });
+                if (path === '/apps/{appId}/versions/{appVersionId}/source')
+                  await tx.exec(
+                    "INSERT INTO audit_logs(organization_id,actor_user_id,action,resource_id,outcome,request_id,safe_metadata) VALUES($1,$2,$3,$4,'allow',$5,$6)",
+                    [
+                      org,
+                      s.userId,
+                      op.operationId,
+                      p['appId'],
+                      req.id,
+                      JSON.stringify({ appVersionId: p['appVersionId'] }),
+                    ],
+                  );
+                return result;
               });
             else {
               const r = await mutations.run(
@@ -293,6 +306,9 @@ export function createStudioRuntime(
     );
     route('POST', '/apps/{appId}/workspace/commit', (c) =>
       workspace.commit(c.tx, c.s, c.p['appId']!, c.body as S['CommitServerWorkspace']),
+    );
+    route('GET', '/apps/{appId}/versions/{appVersionId}/source', (c) =>
+      service.versionSource(c.tx, c.s, c.p['appId']!, c.p['appVersionId']!),
     );
     route('GET', '/apps/{appId}/versions/{appVersionId}', (c) =>
       service.getVersion(c.tx, c.s, c.p['appId']!, c.p['appVersionId']!),

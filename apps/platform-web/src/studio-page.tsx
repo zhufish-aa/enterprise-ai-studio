@@ -8,6 +8,7 @@ import {
 } from '@eas/platform-sdk';
 import { studentCenterBridge } from './student-center-bridge.js';
 import { ServerEditor } from './server-editor.js';
+import { VersionDiff } from './version-diff.js';
 import { SiteSharingDialog } from './site-sharing.js';
 import { SiteDataSources, SiteBackendRuntime } from './site-runtime.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -624,6 +625,15 @@ export function StudioPage({
               )
             ) : tab === 'versions' ? (
               <div className="studio-history">
+                {canDevelop && (
+                  <VersionDiff
+                    key={selected + (versions.length ? ':ready' : ':empty')}
+                    api={api}
+                    appId={selected}
+                    versions={versions}
+                    initialVersion={version}
+                  />
+                )}
                 {versions.map((item) => (
                   <article key={item.id}>
                     <span className="studio-version-number">v{item.version}</span>

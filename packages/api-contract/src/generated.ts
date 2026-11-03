@@ -2558,6 +2558,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/apps/{appId}/versions/{appVersionId}/source": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read immutable source snapshot for version comparison
+         * @description Read sealed source bytes without changing workspace or version. Requires current application developer/maintainer membership and live TEST dataset/field grants. No metadata administrator bypass. Source is never executed; response is not cacheable.
+         */
+        get: operations["getStudioVersionSource"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -24775,6 +24795,165 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SiteProxyResponse"];
+                };
+            };
+        };
+    };
+    getStudioVersionSource: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Must match active server-validated membership; never trusted as authority. */
+                "X-Organization-Id": components["parameters"]["Organization"];
+            };
+            path: {
+                appId: string;
+                appVersionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    "Cache-Control"?: "no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SourceUpload"];
+                };
+            };
+            /** @description Validation error */
+            400: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Invalid or missing access token */
+            401: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Action forbidden */
+            403: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Resource not visible */
+            404: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description State or idempotency conflict */
+            409: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Revision mismatch */
+            412: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Request size limit exceeded */
+            413: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Semantic policy violation */
+            422: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Missing If-Match */
+            428: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Rate limited */
+            429: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Dependency unavailable or execution disabled */
+            503: {
+                headers: {
+                    /** @description Trace identifier */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
                 };
             };
         };

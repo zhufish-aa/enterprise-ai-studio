@@ -431,6 +431,27 @@ export class StudioService {
     await this.inspectManifest(tx, s, row.manifest);
     return (await this.versionBuildDetails(tx, s, [row]))[0]!;
   }
+  /** Read only a sealed snapshot, never the mutable workspace or a build artifact. */
+  async versionSource(
+    tx: Sql,
+    s: Subject,
+    appId: string,
+    versionId: string,
+  ): Promise<S['SourceUpload']> {
+    const version = await this.version(tx, s, appId, versionId, true);
+    await this.validateManifest(tx, s, version.manifest);
+    const blob = requireValue(
+      await tx.one<{ content: Buffer }>(
+        "SELECT b.content FROM studio_artifact_blobs b JOIN artifacts a ON a.organization_id=b.organization_id AND a.id=b.artifact_id WHERE b.organization_id=$1 AND b.artifact_id=$2 AND a.kind='source' AND a.status='sealed' AND a.digest=$3",
+        [s.organizationId, version.source_artifact_id, version.source_digest],
+      ),
+    );
+    const digest = 'sha256:' + createHash('sha256').update(blob.content).digest('hex');
+    if (digest !== version.source_digest) throw new Fault(409, 'SOURCE_DIGEST_MISMATCH');
+    const source: unknown = JSON.parse(blob.content.toString());
+    if (!this.validate('SourceUpload', source)) throw new Fault(409, 'SOURCE_SNAPSHOT_INVALID');
+    return source as S['SourceUpload'];
+  }
   async versionBuildDetails(
     tx: Sql,
     s: Subject,
